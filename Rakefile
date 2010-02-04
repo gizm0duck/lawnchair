@@ -5,12 +5,11 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "lawnchair"
-    gem.summary = %Q{TODO: one-line summary of your gem}
+    gem.summary = "Enclose complicated Ruby code in a block and cache it in redis"
     gem.description = %Q{TODO: longer description of your gem}
     gem.email = "shanewolf@gmail.com"
     gem.homepage = "http://github.com/gizm0duck/lawnchair"
     gem.authors = ["Shane Wolf"]
-    gem.add_development_dependency "rspec", ">= 1.2.9"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
