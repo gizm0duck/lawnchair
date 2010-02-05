@@ -3,7 +3,6 @@ require "#{File.dirname(__FILE__)}/../lib/lawnchair"
 
 Lawnchair.redis.flushdb
 
-# 
 # *** Performing 1000 iterations ***
 #              user       system        total        real
 # cached:     0.140000    0.040000    0.180000    ( 0.292324)

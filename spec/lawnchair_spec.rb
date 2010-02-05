@@ -49,9 +49,6 @@ describe "Lawnchair::Cache" do
       Lawnchair::Cache.please(:key => "pizza", :expires_in => 1000) { "muschroom/onion" }
       Lawnchair.redis.ttl("Lawnchair:pizza").should == 1 # seconds
     end
-    
-    it "allows you to pass in a collection of objects, and the cache key will be built off them"
-    
   end
   
   describe ".exists?" do
