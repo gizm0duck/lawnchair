@@ -21,7 +21,7 @@ end
 Benchmark.bm(7) do |x|
   x.report("cached:") do
     (1..n).each do |i|
-      Lawnchair::Cache.please(:key => "foo") do
+      Lawnchair::Cache.me(:key => "foo") do
         expensive_stuff
       end
     end

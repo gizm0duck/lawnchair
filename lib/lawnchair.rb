@@ -12,8 +12,8 @@ module Lawnchair
   end
   
   class Cache
-    def self.please(options = {}, &block)
-      raise "Cache key please!" unless options.has_key?(:key)
+    def self.me(options = {}, &block)
+      raise "Cache key me!" unless options.has_key?(:key)
       
       if exists?(options[:key])
         Marshal.load(Lawnchair.redis[compute_key(options[:key])])
