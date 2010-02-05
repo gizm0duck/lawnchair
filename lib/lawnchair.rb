@@ -16,12 +16,11 @@ module Lawnchair
       raise "Cache key please!" unless options.has_key?(:key)
       
       if exists?(options[:key])
-        return Lawnchair.redis[compute_key(options[:key])]
+        Marshal.load(Lawnchair.redis[compute_key(options[:key])])
       else
         val = block.call
         expires_in = compute_expiry(options[:expires_in])
-
-        Lawnchair.redis.set(compute_key(options[:key]), val, expires_in)
+        Lawnchair.redis.set(compute_key(options[:key]), Marshal.dump(val), expires_in)
         return val
       end
     end

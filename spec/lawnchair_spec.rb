@@ -12,20 +12,32 @@ describe "Lawnchair::Cache" do
       it "returns the item from the cache if it exists" do
         Lawnchair::Cache.please(:key => "yogurt") { "strawberry/banana" }
 
-        Lawnchair.redis["Lawnchair:yogurt"] = "FROM THE CACHE"
+        Lawnchair.redis["Lawnchair:yogurt"] = Marshal.dump("FROM THE CACHE")
         x = Lawnchair::Cache.please(:key => "yogurt") { "strawberry/banana" }
         x.should == "FROM THE CACHE"
       end
       
       it "sets the return value in the cache key given" do
         Lawnchair::Cache.please(:key => "pizza") { "muschroom/onion" }
-        Lawnchair.redis["Lawnchair:pizza"].should == "muschroom/onion"
+        Lawnchair.redis["Lawnchair:pizza"].should == Marshal.dump("muschroom/onion")
       end
     end
     
     context "when the object the block returns is an object" do
-      it "returns the value if it exists"
-      it "marshalls the object into redis"
+      it "returns the value if it exists" do
+        expected_object = [1,2,3,4]
+        Lawnchair::Cache.please(:key => "marshalled_array") { expected_object }
+        
+        x = Lawnchair::Cache.please(:key => "marshalled_array") { "JUNK DATA" }
+        x.should == expected_object
+      end
+      
+      it "marshalls the object into redis" do
+        expected_object = [1,2,3,4]
+        Lawnchair::Cache.please(:key => "marshalled_array") { expected_object }
+        
+        Marshal.load(Lawnchair.redis["Lawnchair:marshalled_array"]).should == [1,2,3,4]
+      end
     end
     
     it "sets a default ttl of 60 minutes" do
