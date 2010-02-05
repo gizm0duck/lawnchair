@@ -13,8 +13,9 @@ n = (ARGV.shift || 1000).to_i
 puts "*** Performing #{n} iterations ***"
 
 def expensive_stuff
+  a = []
   100.times do
-    Date.parse("Dec 3. 1981")
+    a << Date.parse("Dec 3. 1981")
   end
 end
 
