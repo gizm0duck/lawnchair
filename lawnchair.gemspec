@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "lawnchair.gemspec",
      "lib/lawnchair.rb",
      "spec/lawnchair_spec.rb",
      "spec/spec.opts",
