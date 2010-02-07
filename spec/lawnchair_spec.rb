@@ -5,7 +5,7 @@ describe "Lawnchair::Cache" do
     it "raises an exception if no key is given" do
       lambda do
         Lawnchair::Cache.me { 1 }
-      end.should raise_error("Cache key me!")
+      end.should raise_error("Cache key please!")
     end
     
     context "when the object the block returns is a string" do

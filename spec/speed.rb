@@ -3,6 +3,9 @@ require "#{File.dirname(__FILE__)}/../lib/lawnchair"
 
 Lawnchair.redis.flushdb
 
+# Totally contrived and fairly useless example... just wanted to make sure the overhead of 
+# reading and marshalling the data isn't obscene
+
 # *** Performing 1000 iterations ***
 #              user       system        total        real
 # cached:     0.140000    0.040000    0.180000    ( 0.292324)

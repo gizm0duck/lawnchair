@@ -7,13 +7,17 @@ module Lawnchair
     attr_reader :redis
   end
   
-  def self.redis
-    @redis ||= Redis.new :db => 11
+  def self.connectdb(redis)
+    @redis ||= redis
+  end
+  
+  def self.flushdb
+    redis.flushdb
   end
   
   class Cache
     def self.me(options = {}, &block)
-      raise "Cache key me!" unless options.has_key?(:key)
+      raise "Cache key please!" unless options.has_key?(:key)
       
       if exists?(options[:key])
         Marshal.load(Lawnchair.redis[compute_key(options[:key])])
