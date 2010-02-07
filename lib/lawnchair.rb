@@ -7,8 +7,8 @@ module Lawnchair
     attr_reader :redis
   end
   
-  def self.connectdb(redis)
-    @redis ||= redis
+  def self.connectdb(redis=nil)
+    @redis ||= Redis.new(:db => 11)
   end
   
   def self.flushdb
@@ -31,6 +31,10 @@ module Lawnchair
     
     def self.compute_key(key)
       "Lawnchair:#{key}"
+    end
+    
+    def self.expire(key)
+      Lawnchair.redis.del compute_key(key)
     end
     
     def self.exists?(key)

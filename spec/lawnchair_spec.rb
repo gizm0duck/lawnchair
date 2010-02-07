@@ -63,4 +63,15 @@ describe "Lawnchair::Cache" do
       Lawnchair::Cache.exists?("mu").should be_true
     end
   end
+  
+  describe ".expire" do
+    it "should only expire the key specified" do
+      Lawnchair.redis["Lawnchair:mu"] = "fasa"
+      Lawnchair.redis["Lawnchair:sim"] = "ba"
+    
+      Lawnchair::Cache.expire("mu")
+      Lawnchair.redis["Lawnchair:mu"].should be_nil
+      Lawnchair.redis["Lawnchair:sim"].should == "ba"
+    end
+  end
 end

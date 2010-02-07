@@ -1,6 +1,47 @@
 = lawnchair
 
-Description goes here.
+Very simple caching mechanism for arbitrary pieces of ruby code using Redis as the distributed (or local) cache
+
+== Usage Examples
+
+
+All you really need to do is wrap some expensive piece of Ruby code in the Lawnchair::Cache.me method as a block and it will be evaluated and the return value will cached in the given cache key.
+
+First, connect to the Redis database
+
+Lawnchair.connectdb
+
+This will connect to a default database on localhost, if you want to connect to a particular database you can do:
+
+Lawnchair.connectdb(Redis.new(:database => 11, :host => "127.0.0.1", :port => 6379))
+
+Lawnchair::Cache.me(:key => "contrived_example") do
+  # ideally this would be something a little more computationally expensive, but sleep will have to do
+  (1..3).inject([]) do
+    |set, i| set << Time.now.strftime("%H:%M:%S")
+    sleep 1
+    set
+  end
+end
+
+["12:26:08", "12:26:09", "12:26:10"]
+
+Now, since it is cached, any time this block method is called (for the next 60 minute) it will return those values.  also, you will note it comes back instantly, instead of waiting on those sleeps.
+
+If an hour is too long, or short for the cache key expiration you can set that to anything you want using the :expires_in hash key and entering a time in milliseconds
+
+Lawnchair::Cache.me(:key => "contrived_example", :expires_in => 1.day) do
+  # expensive code to be cached for 24 hours
+end
+
+If you need to manually expire a key just call:
+
+Lawnchair::Cache.expire("contrived_example")
+
+If you need to flush all the values in the database
+
+Lawnchair.flushdb
+
 
 == Note on Patches/Pull Requests
  
