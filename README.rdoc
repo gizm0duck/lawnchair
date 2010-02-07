@@ -2,6 +2,11 @@
 
 Very simple caching mechanism for arbitrary pieces of ruby code using Redis as the distributed (or local) cache
 
+== Prerequisites
+http://code.google.com/p/redis/
+and
+http://github.com/ezmobius/redis-rb/
+
 == Usage Examples
 
 
@@ -32,7 +37,7 @@ The return value is exactly what you think it should be
 
 Now, since it is cached, any time this block method is called (for the next 60 minute) it will return those values.  also, you will note it comes back instantly, instead of waiting on those sleeps.
 
-If an hour is too long, or short for the cache key expiration you can set that to anything you want using the :expires_in hash key and entering a time in milliseconds
+If an hour is too long, or short for the cache key expiration you can set that to anything you want using the :expires_in hash key and entering a time in seconds
 
   Lawnchair::Cache.me(:key => "contrived_example", :expires_in => 1.day) do
     # expensive code to be cached for 24 hours

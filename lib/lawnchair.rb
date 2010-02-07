@@ -41,9 +41,8 @@ module Lawnchair
       return !!Lawnchair.redis[compute_key(key)]
     end
     
-    def self.compute_expiry(ms)
-      ms ||= 3600000
-      ms/1000
+    def self.compute_expiry(seconds)
+      seconds || 3600
     end
   end
 end

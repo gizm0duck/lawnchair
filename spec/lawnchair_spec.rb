@@ -46,7 +46,7 @@ describe "Lawnchair::Cache" do
     end
     
     it "allows you to override the default ttl" do
-      Lawnchair::Cache.me(:key => "pizza", :expires_in => 1000) { "muschroom/onion" }
+      Lawnchair::Cache.me(:key => "pizza", :expires_in => 1) { "muschroom/onion" }
       Lawnchair.redis.ttl("Lawnchair:pizza").should == 1 # seconds
     end
   end
