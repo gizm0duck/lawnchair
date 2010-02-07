@@ -5,14 +5,14 @@ module Lawnchair
   
   class << self
     attr_reader :redis
-  end
-  
-  def self.connectdb(redis=nil)
-    @redis ||= Redis.new(:db => 11)
-  end
-  
-  def self.flushdb
-    redis.flushdb
+    
+    def connectdb(redis=nil)
+      @redis ||= Redis.new(:db => 11)
+    end
+
+    def flushdb
+      redis.flushdb
+    end
   end
   
   class Cache
