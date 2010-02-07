@@ -5,23 +5,21 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lawnchair}
-  s.version = "0.2.0"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shane Wolf"]
-  s.date = %q{2010-02-05}
-  s.description = %q{Enclose complicated Ruby code in a block and cache it in redis}
+  s.date = %q{2010-02-07}
+  s.description = %q{Very simple caching mechanism for arbitrary pieces of resoucre ruby code using Redis as the distributed (or local) cache}
   s.email = %q{shanewolf@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
-     "README",
      "README.rdoc"
   ]
   s.files = [
     ".document",
      ".gitignore",
      "LICENSE",
-     "README",
      "README.rdoc",
      "Rakefile",
      "VERSION",
@@ -37,7 +35,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
-  s.summary = %q{Enclose complicated Ruby code in a block and cache it in redis}
+  s.summary = %q{Enclose resource expensive Ruby code in a block and cache it in redis}
   s.test_files = [
     "spec/lawnchair_spec.rb",
      "spec/spec_helper.rb",
