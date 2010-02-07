@@ -30,9 +30,9 @@ Now, since it is cached, any time this block method is called (for the next 60 m
 
 If an hour is too long, or short for the cache key expiration you can set that to anything you want using the :expires_in hash key and entering a time in milliseconds
 
-Lawnchair::Cache.me(:key => "contrived_example", :expires_in => 1.day) do
-  # expensive code to be cached for 24 hours
-end
+  Lawnchair::Cache.me(:key => "contrived_example", :expires_in => 1.day) do
+    # expensive code to be cached for 24 hours
+  end
 
 If you need to manually expire a key just call:
 
