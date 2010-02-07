@@ -1,4 +1,4 @@
-= lawnchair
+= Lawnchair
 
 Very simple caching mechanism for arbitrary pieces of ruby code using Redis as the distributed (or local) cache
 
