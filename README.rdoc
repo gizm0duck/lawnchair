@@ -3,11 +3,9 @@
 Very simple caching mechanism for arbitrary pieces of ruby code using Redis as the distributed (or local) cache
 
 == Prerequisites
-http://code.google.com/p/redis/
+http://code.google.com/p/redis
 
-and
-
-http://github.com/ezmobius/redis-rb/
+http://github.com/ezmobius/redis-rb
 
 == Usage Examples
 
