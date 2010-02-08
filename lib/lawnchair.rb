@@ -34,11 +34,11 @@ module Lawnchair
     end
     
     def self.expire(key)
-      Lawnchair.redis.del compute_key(key)
+      Lawnchair.redis.del(compute_key(key))
     end
     
     def self.exists?(key)
-      return !!Lawnchair.redis[compute_key(key)]
+      return Lawnchair.redis.exists(compute_key(key))
     end
     
     def self.compute_expiry(seconds)
