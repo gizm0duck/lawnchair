@@ -4,7 +4,9 @@ Very simple caching mechanism for arbitrary pieces of ruby code using Redis as t
 
 == Prerequisites
 http://code.google.com/p/redis/
+
 and
+
 http://github.com/ezmobius/redis-rb/
 
 == Usage Examples
