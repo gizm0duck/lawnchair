@@ -7,8 +7,11 @@ Very simple caching mechanism for arbitrary pieces of ruby code using Redis as t
   cd redis-rb
   rake redis:install
 
-== Usage Examples
+== Installation
 
+  sudo gem install lawnchair
+
+== Usage Examples
 
 All you really need to do is wrap some expensive piece of Ruby code in the Lawnchair::Cache.me method as a block and it will be evaluated and the return value will cached in the given cache key.
 
