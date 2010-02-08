@@ -12,7 +12,7 @@ Very simple caching mechanism for arbitrary pieces of ruby code using Redis as t
 
 All you really need to do is wrap some expensive piece of Ruby code in the Lawnchair::Cache.me method as a block and it will be evaluated and the return value will cached in the given cache key.
 
-First, connect to the Redis database
+First, connect to the Redis database.  This would most likely go into an environment.rb.
 
   Lawnchair.connectdb
 
