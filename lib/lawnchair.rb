@@ -24,14 +24,8 @@ module Lawnchair
     
     def self.me(options = {}, &block)
       raise "Cache key please!" unless options.has_key?(:key)
-      
-      if options[:in_process]
-        key_exists = @@in_process_store.has_key?([compute_key(options[:key])])
-      else
-        key_exists = exists?(options[:key])
-      end
         
-      if key_exists && !options[:force]
+      if exists?(options[:key], options[:in_process]) && !options[:force]
         if options[:in_process]
           Marshal.load(@@in_process_store[compute_key(options[:key])])
         else
@@ -61,8 +55,12 @@ module Lawnchair
       Lawnchair.redis.del(compute_key(key))
     end
     
-    def self.exists?(key)
-      return Lawnchair.redis.exists(compute_key(key))
+    def self.exists?(key, in_process=false)
+      if in_process
+        @@in_process_store.has_key?(compute_key(key))
+      else
+        return Lawnchair.redis.exists(compute_key(key))
+      end
     end
     
     def self.compute_expiry(seconds)

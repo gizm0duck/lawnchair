@@ -47,7 +47,6 @@ describe "Lawnchair::Cache" do
       
       describe "when the value exists in redis" do
         it "takes the value from redis and places it in the in process cache" do
-          Lawnchair::Cache.in_process_store.delete("Lawnchair:marshalled_array")
           expected_object = [1,2,3,4]
           unexpected_object = [1,2,3,4,5,6,7,8]
           Lawnchair::Cache.me(:key => "marshalled_array") { expected_object }
@@ -70,15 +69,29 @@ describe "Lawnchair::Cache" do
   end
   
   describe ".exists?" do
-    it "returns false when the key does not exist" do
-      Lawnchair.redis.keys('*').should_not include("Lawnchair:mu")
-      Lawnchair::Cache.exists?("mu").should be_false
+    context "when :in_process = true" do
+      it "returns false when the key does not exist" do
+        Lawnchair::Cache.in_process_store["Lawnchair:mu"].should be_nil
+        Lawnchair::Cache.exists?("mu", true).should be_false
+      end
+
+      it "returns true when the key exists" do
+        Lawnchair::Cache.in_process_store["Lawnchair:mu"] = "fasa"
+        Lawnchair::Cache.exists?("mu", true).should be_true
+      end
     end
     
-    it "returns true when the key exists" do
-      Lawnchair.redis["Lawnchair:mu"] = "fasa"
-      Lawnchair.redis.keys('*').should include("Lawnchair:mu")
-      Lawnchair::Cache.exists?("mu").should be_true
+    context "when :in_process = false" do
+      it "returns false when the key does not exist" do
+        Lawnchair.redis.keys('*').should_not include("Lawnchair:mu")
+        Lawnchair::Cache.exists?("mu").should be_false
+      end
+
+      it "returns true when the key exists" do
+        Lawnchair.redis["Lawnchair:mu"] = "fasa"
+        Lawnchair.redis.keys('*').should include("Lawnchair:mu")
+        Lawnchair::Cache.exists?("mu").should be_true
+      end
     end
   end
   
