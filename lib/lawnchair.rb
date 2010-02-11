@@ -30,7 +30,7 @@ module Lawnchair
       else
         key_exists = exists?(options[:key])
       end
-      
+        
       
       if key_exists && !options[:force]
         if options[:in_process]
@@ -39,16 +39,16 @@ module Lawnchair
           Marshal.load(Lawnchair.redis[compute_key(options[:key])])
         end
       else
+        if options[:in_process] && exists?(options[:key])
+          cached_val = Lawnchair.redis[compute_key(options[:key])]
+          @@in_process_store[compute_key(options[:key])] = cached_val
+          return Marshal.dump(cached_val)
+        end
+        
         val = block.call
         expires_in = compute_expiry(options[:expires_in])
-        dumped_val = Marshal.dump(val)
-        if options[:in_process]
-          if exists?(options[:key])
-            @@in_process_store[compute_key(options[:key])] = Lawnchair.redis[compute_key(options[:key])]
-          else
-            @@in_process_store[compute_key(options[:key])] = dumped_val
-          end
-        end
+        dumped_val = Marshal.dump(val)        
+        @@in_process_store[compute_key(options[:key])] = dumped_val if options[:in_process]
         Lawnchair.redis.set(compute_key(options[:key]), dumped_val, expires_in)
         return val
       end
