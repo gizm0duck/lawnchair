@@ -35,17 +35,26 @@ describe "Lawnchair::Cache" do
       end
     end
     
-    describe "when passed :in_process => true" do
-      it "should set the value to the key in process as well as in redis" do
-        expected_object = [1,2,3,4]
-        Lawnchair::Cache.me(:key => "marshalled_array", :in_process => true) { expected_object }
-        Marshal.load(Lawnchair.redis["Lawnchair:marshalled_array"]).should == [1,2,3,4]
-        
-        dummy_value = "DOESN'T MATTER"
-        Lawnchair.redis["Lawnchair:marshalled_array"] = dummy_value
-        in_process_value = Lawnchair::Cache.me(:key => "marshalled_array", :in_process => true) { expected_object }
-        in_process_value.should == expected_object
-        Lawnchair.redis["Lawnchair:marshalled_array"].should == dummy_value
+    describe "when in_process => true" do
+      describe "when the value does not exist in redis" do
+        it "should set the value to the key in process as well as in redis" do
+          expected_object = [1,2,3,4]
+          Lawnchair::Cache.me(:key => "marshalled_array", :in_process => true) { expected_object }
+          Marshal.load(Lawnchair.redis["Lawnchair:marshalled_array"]).should == [1,2,3,4]
+          Marshal.load(Lawnchair::Cache.in_process_store["Lawnchair:marshalled_array"]).should == [1,2,3,4]
+        end
+      end
+      
+      describe "when the value exists in redis" do
+        it "takes the value from redis and places it in the in process cache" do
+          Lawnchair::Cache.in_process_store.delete("Lawnchair:marshalled_array")
+          expected_object = [1,2,3,4]
+          unexpected_object = [1,2,3,4,5,6,7,8]
+          Lawnchair::Cache.me(:key => "marshalled_array") { expected_object }
+          Lawnchair::Cache.in_process_store["Lawnchair:marshalled_array"].should be_nil
+          Lawnchair::Cache.me(:key => "marshalled_array", :in_process => true) { unexpected_object }
+          Marshal.load(Lawnchair::Cache.in_process_store["Lawnchair:marshalled_array"]).should == expected_object
+        end
       end
     end
     
