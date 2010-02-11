@@ -16,15 +16,25 @@ module Lawnchair
   end
   
   class Cache
+    @@in_process_store = {}
+    
     def self.me(options = {}, &block)
       raise "Cache key please!" unless options.has_key?(:key)
       
       if exists?(options[:key]) && !options[:force]
-        Marshal.load(Lawnchair.redis[compute_key(options[:key])])
+        if options[:in_process]
+          Marshal.load(@@in_process_store[compute_key(options[:key])])
+        else
+          Marshal.load(Lawnchair.redis[compute_key(options[:key])])
+        end
       else
         val = block.call
         expires_in = compute_expiry(options[:expires_in])
-        Lawnchair.redis.set(compute_key(options[:key]), Marshal.dump(val), expires_in)
+        dumped_val = Marshal.dump(val)
+        if options[:in_process]
+          @@in_process_store[compute_key(options[:key])] = dumped_val
+        end
+        Lawnchair.redis.set(compute_key(options[:key]), dumped_val, expires_in)
         return val
       end
     end

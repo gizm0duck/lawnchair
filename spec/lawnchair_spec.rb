@@ -35,6 +35,20 @@ describe "Lawnchair::Cache" do
       end
     end
     
+    describe "when passed :in_process => true" do
+      it "should set the value to the key in process as well as in redis" do
+        expected_object = [1,2,3,4]
+        Lawnchair::Cache.me(:key => "marshalled_array", :in_process => true) { expected_object }
+        Marshal.load(Lawnchair.redis["Lawnchair:marshalled_array"]).should == [1,2,3,4]
+        
+        dummy_value = "DOESN'T MATTER"
+        Lawnchair.redis["Lawnchair:marshalled_array"] = dummy_value
+        in_process_value = Lawnchair::Cache.me(:key => "marshalled_array", :in_process => true) { expected_object }
+        in_process_value.should == expected_object
+        Lawnchair.redis["Lawnchair:marshalled_array"].should == dummy_value
+      end
+    end
+    
     it "sets a default ttl of 60 minutes" do
       Lawnchair::Cache.me(:key => "pizza") { "muschroom/onion" }
       Lawnchair.redis.ttl("Lawnchair:pizza").should == 3600 # seconds
