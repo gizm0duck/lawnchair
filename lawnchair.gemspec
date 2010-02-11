@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lawnchair}
-  s.version = "0.3.1"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shane Wolf"]
-  s.date = %q{2010-02-07}
+  s.date = %q{2010-02-11}
   s.description = %q{Very simple caching mechanism for arbitrary pieces of resoucre ruby code using Redis as the distributed (or local) cache}
   s.email = %q{shanewolf@gmail.com}
   s.extra_rdoc_files = [
@@ -17,8 +17,7 @@ Gem::Specification.new do |s|
      "README.rdoc"
   ]
   s.files = [
-    ".document",
-     ".gitignore",
+    ".gitignore",
      "LICENSE",
      "README.rdoc",
      "Rakefile",
