@@ -19,7 +19,7 @@ module Lawnchair
     def self.me(options = {}, &block)
       raise "Cache key please!" unless options.has_key?(:key)
       
-      if exists?(options[:key])
+      if exists?(options[:key]) && !options[:force]
         Marshal.load(Lawnchair.redis[compute_key(options[:key])])
       else
         val = block.call

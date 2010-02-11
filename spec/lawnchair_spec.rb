@@ -8,35 +8,30 @@ describe "Lawnchair::Cache" do
       end.should raise_error("Cache key please!")
     end
     
-    context "when the object the block returns is a string" do
-      it "returns the item from the cache if it exists" do
-        Lawnchair::Cache.me(:key => "yogurt") { "strawberry/banana" }
-
-        Lawnchair.redis["Lawnchair:yogurt"] = Marshal.dump("FROM THE CACHE")
-        x = Lawnchair::Cache.me(:key => "yogurt") { "strawberry/banana" }
-        x.should == "FROM THE CACHE"
-      end
+    it "returns the value if it exists" do
+      expected_object = [1,2,3,4]
+      Lawnchair::Cache.me(:key => "marshalled_array") { expected_object }
       
-      it "sets the return value in the cache key given" do
-        Lawnchair::Cache.me(:key => "pizza") { "muschroom/onion" }
-        Lawnchair.redis["Lawnchair:pizza"].should == Marshal.dump("muschroom/onion")
-      end
+      x = Lawnchair::Cache.me(:key => "marshalled_array") { "JUNK DATA" }
+      x.should == expected_object
     end
     
-    context "when the object the block returns is an object" do
-      it "returns the value if it exists" do
-        expected_object = [1,2,3,4]
-        Lawnchair::Cache.me(:key => "marshalled_array") { expected_object }
-        
-        x = Lawnchair::Cache.me(:key => "marshalled_array") { "JUNK DATA" }
-        x.should == expected_object
-      end
+    it "marshalls the object into redis" do
+      expected_object = [1,2,3,4]
+      Lawnchair::Cache.me(:key => "marshalled_array") { expected_object }
       
-      it "marshalls the object into redis" do
-        expected_object = [1,2,3,4]
-        Lawnchair::Cache.me(:key => "marshalled_array") { expected_object }
-        
+      Marshal.load(Lawnchair.redis["Lawnchair:marshalled_array"]).should == [1,2,3,4]
+    end
+    
+    describe "when passed :force => true" do
+      it "expires the key and sets it to the new return value" do
+        initial_expected_object = [1,2,3,4]
+        new_expected_object     = [1,2,3]
+        Lawnchair::Cache.me(:key => "marshalled_array") { initial_expected_object }
         Marshal.load(Lawnchair.redis["Lawnchair:marshalled_array"]).should == [1,2,3,4]
+        
+        Lawnchair::Cache.me(:key => "marshalled_array", :force => true) { new_expected_object }
+        Marshal.load(Lawnchair.redis["Lawnchair:marshalled_array"]).should == [1,2,3]
       end
     end
     
