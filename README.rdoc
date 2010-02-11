@@ -59,6 +59,8 @@ if you are running the Redis server on a different physical machine as all netwo
   
 This code will get cached in redis as well, so each different process that runs the expensive code in the block will get the value from redis, instead of having to run it to get the value.
 
+== Odds and Ends
+
 If you need to manually expire a key just call:
 
   Lawnchair::Cache.expire("contrived_example")
