@@ -1,7 +1,8 @@
 require 'benchmark'
 require "#{File.dirname(__FILE__)}/../lib/lawnchair"
 
-Lawnchair.redis.flushdb
+Lawnchair.connectdb
+Lawnchair.flushdb
 
 # Totally contrived and fairly useless example... just wanted to make sure the overhead of 
 # reading and marshalling the data isn't obscene
@@ -23,15 +24,23 @@ def expensive_stuff
 end
 
 Benchmark.bm(7) do |x|
-  x.report("cached:") do
+  x.report("cached:\t\t") do
     (1..n).each do |i|
-      Lawnchair::Cache.me(:key => "foo") do
+      Lawnchair::Cache.me(:key => "redis_cache") do
         expensive_stuff
       end
     end
   end
   
-  x.report("not cached:") do
+  x.report("in process cached:") do
+    (1..n).each do |i|
+      Lawnchair::Cache.me(:key => "in_process_cache") do
+        expensive_stuff
+      end
+    end
+  end
+  
+  x.report("not cached:\t\t") do
     (1..n).each do |i|
       expensive_stuff
     end

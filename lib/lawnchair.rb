@@ -31,7 +31,6 @@ module Lawnchair
         key_exists = exists?(options[:key])
       end
         
-      
       if key_exists && !options[:force]
         if options[:in_process]
           Marshal.load(@@in_process_store[compute_key(options[:key])])

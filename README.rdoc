@@ -15,6 +15,8 @@ Very simple caching mechanism for arbitrary pieces of ruby code using Redis as t
 
 All you really need to do is wrap some expensive piece of Ruby code in the Lawnchair::Cache.me method as a block and it will be evaluated and the return value will cached in the given cache key.
 
+MAKE SURE REDIS SERVER IS RUNNING PRIOR TO TRYING ANYTHING BELOW!!!
+
 First, connect to the Redis database.  This would most likely go into an environment.rb.
 
   Lawnchair.connectdb
@@ -45,6 +47,17 @@ If an hour is too long, or short for the cache key expiration you can set that t
   Lawnchair::Cache.me(:key => "contrived_example", :expires_in => 1.day) do
     # expensive code to be cached for 24 hours
   end
+  
+== In Process Caching
+
+If you want to get really fancy you can cache the values in process as well as in Redis.  This can be a fairly significant win
+if you are running the Redis server on a different physical machine as all network latency is taken out of the equation, especially if you are hitting a cache key many times on the same request.  Also, it's probably best not to store TONS of keys in there, as your ruby process can bloat fairly quickly if you put everything in there.  Also, these will persist as long as the process is running, unless you manually expire it.
+
+  Lawnchair::Cache.me(:key => "contrived_example", :in_process => true) do
+    # expensive code to be cached in process AND in redis
+  end
+  
+This code will get cached in redis as well, so each different process that runs the expensive code in the block will get the value from redis, instead of having to run it to get the value.
 
 If you need to manually expire a key just call:
 
