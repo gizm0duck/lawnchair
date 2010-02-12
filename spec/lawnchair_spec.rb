@@ -96,13 +96,22 @@ describe "Lawnchair::Cache" do
   end
   
   describe ".expire" do
-    it "should only expire the key specified" do
+    it "should only expire the key specified in redis" do
       Lawnchair.redis["Lawnchair:mu"] = "fasa"
       Lawnchair.redis["Lawnchair:sim"] = "ba"
     
       Lawnchair::Cache.expire("mu")
       Lawnchair.redis["Lawnchair:mu"].should be_nil
       Lawnchair.redis["Lawnchair:sim"].should == "ba"
+    end
+    
+    it "expires the in_process key" do
+      Lawnchair::Cache.in_process_store["Lawnchair:mu"] = "fasa"
+      Lawnchair::Cache.in_process_store["Lawnchair:sim"] = "ba"
+    
+      Lawnchair::Cache.expire("mu")
+      Lawnchair::Cache.in_process_store["Lawnchair:mu"].should be_nil
+      Lawnchair::Cache.in_process_store["Lawnchair:sim"].should == "ba"
     end
   end
 end

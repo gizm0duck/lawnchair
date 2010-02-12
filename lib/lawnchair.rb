@@ -52,6 +52,7 @@ module Lawnchair
     end
     
     def self.expire(key)
+      Lawnchair::Cache.in_process_store.delete(compute_key(key))
       Lawnchair.redis.del(compute_key(key))
     end
     
