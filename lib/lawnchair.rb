@@ -1,4 +1,5 @@
 Dir[File.dirname(__FILE__) + '/storage_engine/*.rb'].each {|file| require file }
+require 'redis'
 require 'view/helper'
 
 module Lawnchair
