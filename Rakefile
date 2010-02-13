@@ -10,6 +10,7 @@ begin
     gem.email = "shanewolf@gmail.com"
     gem.homepage = "http://github.com/gizm0duck/lawnchair"
     gem.authors = ["Shane Wolf"]
+    gem.add_dependency "redis"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
