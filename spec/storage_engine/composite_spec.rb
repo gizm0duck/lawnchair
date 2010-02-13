@@ -11,6 +11,11 @@ describe "Lawnchair::StorageEngine::Composite" do
     it "has a collection of storage_engines" do
       composite_store.storage_engines == []
     end
+    
+    it "allows you to specify storage engines" do
+      composite_store = Lawnchair::StorageEngine::Composite.new(:in_process, :redis)
+      composite_store.storage_engines.should == [Lawnchair::StorageEngine::InProcess, Lawnchair::StorageEngine::Redis]
+    end
   end
   
   describe "#register_storage_engine" do
@@ -19,7 +24,7 @@ describe "Lawnchair::StorageEngine::Composite" do
     end
     
     it "adds a storage engine to the collection" do
-      composite_store.register_storage_engine Lawnchair::StorageEngine::Redis
+      composite_store.register_storage_engine :redis
       composite_store.storage_engines.should == [Lawnchair::StorageEngine::Redis]
     end
   end
@@ -35,7 +40,7 @@ describe "Lawnchair::StorageEngine::Composite" do
     
     context "when there is only 1 storage engine" do
       before do
-        composite_store.register_storage_engine Lawnchair::StorageEngine::Redis
+        composite_store.register_storage_engine :redis
       end
       
       context "when the key does not exist" do
@@ -60,8 +65,7 @@ describe "Lawnchair::StorageEngine::Composite" do
     
     context "when there are two storage engines" do
       before do
-        composite_store.register_storage_engine Lawnchair::StorageEngine::InProcess
-        composite_store.register_storage_engine Lawnchair::StorageEngine::Redis
+        @composite_store = Lawnchair::StorageEngine::Composite.new(:in_process, :redis)
       end
       
       context "when the key exists in the first storage engine" do

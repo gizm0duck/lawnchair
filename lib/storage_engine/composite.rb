@@ -3,12 +3,16 @@ module Lawnchair
     class Composite
       attr_reader :storage_engines
     
-      def initialize
+      def initialize(*args)
         @storage_engines = []
+        args.each do |arg|
+          register_storage_engine arg
+        end
       end
       
       def register_storage_engine(storage_engine)
-        storage_engines << storage_engine
+        klass = storage_engine == :redis ? "Redis" : "InProcess"
+        storage_engines << Object.module_eval("Lawnchair::StorageEngine::#{klass}")
       end
     
       def fetch(key, options, &block)
@@ -19,7 +23,7 @@ module Lawnchair
         place_in_storage(key, value, options, index)
       end
       
-      private 
+      private
       
       def find_in_storage(key, options)
         value, index = nil, nil
