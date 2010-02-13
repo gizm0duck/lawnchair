@@ -8,10 +8,10 @@ Lawnchair.flushdb
 # reading and marshalling the data isn't obscene
 
 # *** Performing 1000 iterations ***
-#              user       system        total        real
-# cached:     0.140000    0.040000    0.180000    ( 0.292324)
-# not cached: 26.070000   0.620000    26.690000   ( 27.156388)
-
+#                       user     system      total        real
+# cached:             0.200000   0.050000   0.250000 (  0.397476)
+# in process cached:  0.090000   0.010000   0.100000 (  0.088927)
+# not cached:         26.710000   0.580000  27.290000 ( 27.331749)
 n = (ARGV.shift || 1000).to_i
 
 puts "*** Performing #{n} iterations ***"
@@ -26,7 +26,7 @@ end
 Benchmark.bm(7) do |x|
   x.report("cached:\t\t") do
     (1..n).each do |i|
-      Lawnchair::Cache.me(:key => "redis_cache") do
+      Lawnchair::Cache.me("redis_cache") do
         expensive_stuff
       end
     end
@@ -34,7 +34,7 @@ Benchmark.bm(7) do |x|
   
   x.report("in process cached:") do
     (1..n).each do |i|
-      Lawnchair::Cache.me(:key => "in_process_cache") do
+      Lawnchair::Cache.me("in_process_cache", :in_process => true) do
         expensive_stuff
       end
     end
