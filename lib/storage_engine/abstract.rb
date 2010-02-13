@@ -2,10 +2,10 @@ module Lawnchair
   module StorageEngine
     class Abstract
       class << self
-        attr_reader :cache_container
+        attr_reader :data_store
         
-        def cache_container
-          @cache_container ||= {}
+        def data_store
+          @data_store ||= {}
         end
       
         def fetch(key, options, &block)
@@ -20,9 +20,9 @@ module Lawnchair
       
         def get(key, options={})
           if options[:raw]
-            cache_container[computed_key(key)]
+            data_store[computed_key(key)]
           else
-            exists?(key) ? Marshal.load(cache_container[computed_key(key)]) : nil
+            exists?(key) ? Marshal.load(data_store[computed_key(key)]) : nil
           end
         end
       

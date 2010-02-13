@@ -7,10 +7,10 @@ describe "Lawnchair::StorageEngine::RedisStore" do
     @redis_store = Lawnchair::StorageEngine::Redis
   end
   
-  describe "#cache_container" do
+  describe "#data_store" do
     it "returns the redis cache object" do
       Lawnchair.redis["Lawnchair:mu"] = "fasa"
-      redis_store.cache_container["Lawnchair:mu"].should == "fasa"
+      redis_store.data_store["Lawnchair:mu"].should == "fasa"
     end
   end
   

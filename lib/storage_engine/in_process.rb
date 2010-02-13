@@ -1,27 +1,27 @@
 module Lawnchair
   module StorageEngine
     class InProcess < Abstract
-      @@cache_container = {}
+      @@data_store = {}
       class << self
     
-        def cache_container
-          @@cache_container
+        def data_store
+          @@data_store
         end
     
         def set(key, value, options={})
           if options[:raw]
-            cache_container[computed_key(key)] = value
+            data_store[computed_key(key)] = value
           else
-            cache_container[computed_key(key)] = Marshal.dump(value)
+            data_store[computed_key(key)] = Marshal.dump(value)
           end
         end
 
         def exists?(key)
-          cache_container.has_key?(computed_key(key))
+          data_store.has_key?(computed_key(key))
         end
   
         def expire!(key)
-          cache_container.delete(computed_key(key))
+          data_store.delete(computed_key(key))
         end
       end
     end

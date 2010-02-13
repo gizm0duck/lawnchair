@@ -54,7 +54,7 @@ if you are running the Redis server on a different physical machine as all netwo
   
 This code will get cached in redis as well, so each different process that runs the expensive code in the block will get the value from redis, instead of having to run it to get the value.
 
-== Odds and Ends
+== Accessing DataStores Directly
 
 There are currently two different storage engines (Redis and InProcess) that you can use either together or independently, depending on your needs.  If you want to just store something in process for example you can do
 
@@ -64,11 +64,19 @@ There are currently two different storage engines (Redis and InProcess) that you
 
 Also, you can expire a key for a given storage engine directly by calling
 
-  Lawnchair::StorageEngine::InProcess.expire!("cache_key3")
+  Lawnchair::StorageEngine::InProcess.expire!("cache_key3") # For memory store
 or
-  Lawnchair::StorageEngine::Redis.expire!("cache_key3")
+  Lawnchair::StorageEngine::Redis.expire!("cache_key3") # For redis store
 
-You can also access any of the methods for a given datastore directly, and choose to expire a key in whatever store you want.  Check out the specs for more examples of all you can do.
+You can also access any of the methods for a given datastore directly, and choose to expire a key in whatever store you want.
+
+Available methods are:
+* get - get a value for a key
+* set - set a value for a key regardless of whether or not it exists
+* fetch - get a value if it exists for a given key, otherwise set it
+* expire! - forcefully expire a key
+* exists? - check if a given key exists
+* data_store - access the datastore's values directly like a hash
 
 If you need to flush all the values in the database
 

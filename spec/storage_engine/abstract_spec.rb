@@ -7,9 +7,9 @@ describe "Lawnchair::StorageEngine::Abstract" do
     @abstract_store = Lawnchair::StorageEngine::Abstract
   end
   
-  describe ".cache_container" do
+  describe ".data_store" do
     it "should be an empty hash" do
-      abstract_store.cache_container.should == {}
+      abstract_store.data_store.should == {}
     end
   end
   
@@ -17,7 +17,7 @@ describe "Lawnchair::StorageEngine::Abstract" do
     context "when key exists" do
       before do
         abstract_store.stub!(:exists?).and_return(true)
-        abstract_store.cache_container["Lawnchair:sim"] = "ba"
+        abstract_store.data_store["Lawnchair:sim"] = "ba"
       end
       
       it "returns the value from the cache" do
@@ -29,18 +29,18 @@ describe "Lawnchair::StorageEngine::Abstract" do
     context "when key does not exist" do
       before do
         abstract_store.stub!(:exists?).and_return(false)
-        abstract_store.cache_container["Lawnchair:sim"].should be_nil
+        abstract_store.data_store["Lawnchair:sim"].should be_nil
         
         class Lawnchair::StorageEngine::Abstract
           def self.set(key, value, options={})
-            cache_container["Lawnchair:#{key}"] = value
+            data_store["Lawnchair:#{key}"] = value
           end
         end
       end
       
       it "computes the value and saves it to the cache" do
         value = abstract_store.fetch("sim", :raw => true) { "ba" }
-        abstract_store.cache_container["Lawnchair:sim"].should == "ba"
+        abstract_store.data_store["Lawnchair:sim"].should == "ba"
       end
     end
   end
@@ -48,12 +48,12 @@ describe "Lawnchair::StorageEngine::Abstract" do
   describe ".get" do
     context "when raw is true" do
       it "gets the value in key if it exists" do
-        abstract_store.cache_container["Lawnchair:mu"] = "fasa"
+        abstract_store.data_store["Lawnchair:mu"] = "fasa"
         abstract_store.get("mu", :raw => true).should == "fasa"
       end
       
       it "returns nil if the key does not exist" do
-        abstract_store.cache_container["mu"].should be_nil
+        abstract_store.data_store["mu"].should be_nil
         abstract_store.get("mu", :raw => true).should be_nil
       end
     end
@@ -68,7 +68,7 @@ describe "Lawnchair::StorageEngine::Abstract" do
           expected_value = "fasa"
           value = Marshal.dump(expected_value)
 
-          abstract_store.cache_container["Lawnchair:mu"] = value
+          abstract_store.data_store["Lawnchair:mu"] = value
           abstract_store.get("mu", :raw => false).should == expected_value
         end
       end
@@ -79,7 +79,7 @@ describe "Lawnchair::StorageEngine::Abstract" do
         end
         
         it "returns nil if the key does not exist" do
-          abstract_store.cache_container["Lawnchair:mu"].should be_nil
+          abstract_store.data_store["Lawnchair:mu"].should be_nil
           abstract_store.get("mu", :raw => false).should be_nil
         end
       end

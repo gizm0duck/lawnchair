@@ -9,9 +9,9 @@ Spec::Runner.configure do |config|
   config.before(:each)  do 
     Lawnchair.flushdb
     abstract_store = Lawnchair::StorageEngine::Abstract
-    abstract_store.cache_container.keys.each {|k| abstract_store.cache_container.delete(k)}
+    abstract_store.data_store.keys.each {|k| abstract_store.data_store.delete(k)}
     
     in_process = Lawnchair::StorageEngine::InProcess
-    in_process.cache_container.keys.each {|k| in_process.cache_container.delete(k)}
+    in_process.data_store.keys.each {|k| in_process.data_store.delete(k)}
   end
 end
