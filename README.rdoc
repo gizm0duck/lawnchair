@@ -56,7 +56,7 @@ This code will get cached in redis as well, so each different process that runs 
 
 == Odds and Ends
 
-There are currently two different storage engines (Redis and InProcess) that you can use either together or independently, depending on how frisky you are feeling.  If you want to just store something in process for example you can do
+There are currently two different storage engines (Redis and InProcess) that you can use either together or independently, depending on your needs.  If you want to just store something in process for example you can do
 
   Lawnchair::StorageEngine::InProcess.fetch("cache_key4", :raw => true) do
     # expensive code to be cached in process
