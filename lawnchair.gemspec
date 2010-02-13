@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lawnchair}
-  s.version = "0.4.0"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shane Wolf"]
-  s.date = %q{2010-02-11}
+  s.date = %q{2010-02-12}
   s.description = %q{Very simple caching mechanism for arbitrary pieces of resoucre ruby code using Redis as the distributed (or local) cache}
   s.email = %q{shanewolf@gmail.com}
   s.extra_rdoc_files = [
@@ -24,11 +24,20 @@ Gem::Specification.new do |s|
      "VERSION",
      "lawnchair.gemspec",
      "lib/lawnchair.rb",
+     "lib/storage_engine/abstract.rb",
+     "lib/storage_engine/composite.rb",
+     "lib/storage_engine/in_process.rb",
+     "lib/storage_engine/redis.rb",
+     "lib/view/helper.rb",
      "spec/lawnchair_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "spec/speed.rb",
-     "spec/speed_results.png"
+     "spec/speed_results.png",
+     "spec/storage_engine/abstract_spec.rb",
+     "spec/storage_engine/composite_spec.rb",
+     "spec/storage_engine/in_process_spec.rb",
+     "spec/storage_engine/redis_spec.rb"
   ]
   s.homepage = %q{http://github.com/gizm0duck/lawnchair}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -38,7 +47,11 @@ Gem::Specification.new do |s|
   s.test_files = [
     "spec/lawnchair_spec.rb",
      "spec/spec_helper.rb",
-     "spec/speed.rb"
+     "spec/speed.rb",
+     "spec/storage_engine/abstract_spec.rb",
+     "spec/storage_engine/composite_spec.rb",
+     "spec/storage_engine/in_process_spec.rb",
+     "spec/storage_engine/redis_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
