@@ -37,7 +37,7 @@ The return value is exactly what you think it should be
 
   ["12:26:08", "12:26:09", "12:26:10"]
 
-Now, since it is cached, any time this block method is called (for the next 60 minute) it will return those values.  also, you will note it comes back instantly, instead of waiting on those sleeps.
+Now, since it is cached, any time this block method is called (for the next 60 minutes) it will return those values.  also, you will note it comes back instantly, instead of waiting on those sleeps.
 
 If an hour is too long, or short for the cache key expiration you can set that to anything you want using the :expires_in hash key and entering a time in seconds
 
@@ -85,7 +85,7 @@ Available methods are:
 * exists? - check if a given key exists
 * data_store - access the datastore's values directly like a hash
 
-If you need to flush all the values in the database
+If you need to flush all the values in the Redis database
 
   Lawnchair.flushdb
 
