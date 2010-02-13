@@ -1,6 +1,8 @@
 = Lawnchair
 
-Very simple caching mechanism for arbitrary pieces of ruby code using Redis as the distributed (or local) cache
+Fully featured caching mechanism for arbitrary pieces of resource expensive ruby code using Redis while being able to optionally store data in the Ruby process itself for maximum efficiency.
+
+It includes a Rails view helper that can be used to cache the rendered view code, but other than that everything should work fine in a Merb, Sinatra, or plain old Ruby app.
 
 == Installation
 

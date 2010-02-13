@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "lawnchair"
-    gem.summary = "Enclose resource expensive Ruby code in a block and cache it in redis"
-    gem.description = "Very simple caching mechanism for arbitrary pieces of resoucre ruby code using Redis as the distributed (or local) cache"
+    gem.summary = "Speed up your app by caching expensive code in Redis or in the ruby process itself"
+    gem.description = "Fully featured caching mechanism for arbitrary pieces of resource expensive ruby code using Redis while being able to optionally store data in the Ruby process itself for maximum efficiency."
     gem.email = "shanewolf@gmail.com"
     gem.homepage = "http://github.com/gizm0duck/lawnchair"
     gem.authors = ["Shane Wolf"]
