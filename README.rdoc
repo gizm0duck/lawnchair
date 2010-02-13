@@ -66,7 +66,7 @@ Also, you can expire a key for a given storage engine directly by calling
 
   Lawnchair::StorageEngine::InProcess.expire!("cache_key3")
 or
-  Lawnchair::StorageEngine::Redis("cache_key3")
+  Lawnchair::StorageEngine::Redis.expire!("cache_key3")
 
 You can also access any of the methods for a given datastore directly, and choose to expire a key in whatever store you want.  Check out the specs for more examples of all you can do.
 
