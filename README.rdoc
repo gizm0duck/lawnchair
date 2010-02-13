@@ -22,7 +22,7 @@ This will connect to a default database on localhost, if you want to connect to 
 
 Obligatory example:
   
-  Lawnchair::Cache.me("cache_key") do
+  Lawnchair::Cache.me("cache_key2") do
     # ideally this would be something a little more computationally expensive, but sleep will have to do
     (1..3).inject([]) do
       |set, i| set << Time.now.strftime("%H:%M:%S")
@@ -39,7 +39,7 @@ Now, since it is cached, any time this block method is called (for the next 60 m
 
 If an hour is too long, or short for the cache key expiration you can set that to anything you want using the :expires_in hash key and entering a time in seconds
 
-  Lawnchair::Cache.me(:key => "contrived_example", :expires_in => 1.day) do
+  Lawnchair::Cache.me("cache_key", :expires_in => 1.day) do
     # expensive code to be cached for 24 hours
   end
   
@@ -48,7 +48,7 @@ If an hour is too long, or short for the cache key expiration you can set that t
 If you want to get really fancy you can cache the values in process as well as in Redis.  This can be a fairly significant win
 if you are running the Redis server on a different physical machine as all network latency is taken out of the equation, especially if you are hitting a cache key many times on the same request.  Also, it's probably best not to store TONS of keys in there, as your ruby process can bloat fairly quickly if you put everything in there.  Also, these will persist as long as the process is running, unless you manually expire it.
 
-  Lawnchair::Cache.me(:key => "contrived_example", :in_process => true) do
+  Lawnchair::Cache.me("cache_key3", :in_process => true) do
     # expensive code to be cached in process AND in redis
   end
   
@@ -56,9 +56,19 @@ This code will get cached in redis as well, so each different process that runs 
 
 == Odds and Ends
 
-If you need to manually expire a key just call:
+There are currently two different storage engines (Redis and InProcess) that you can use either together or independently, depending on how frisky you are feeling.  If you want to just store something in process for example you can do
 
-  Lawnchair::Cache.expire("contrived_example")
+  Lawnchair::StorageEngine::InProcess.fetch("cache_key4", :raw => true) do
+    # expensive code to be cached in process
+  end
+
+Also, you can expire a key for a given storage engine directly by calling
+
+  Lawnchair::StorageEngine::InProcess.expire!("cache_key3")
+or
+  Lawnchair::StorageEngine::Redis("cache_key3")
+
+You can also access any of the methods for a given datastore directly, and choose to expire a key in whatever store you want.  Check out the specs for more examples of all you can do.
 
 If you need to flush all the values in the database
 
