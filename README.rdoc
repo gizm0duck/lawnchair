@@ -43,6 +43,11 @@ If an hour is too long, or short for the cache key expiration you can set that t
     # expensive code to be cached for 24 hours
   end
   
+Available options:
+* expires_in - takes a time in seconds and will be set as the ttl on the key (only works for Redis store) 
+* raw - tells the cache not to marshall the data, if you are storing a string value, this is the way to go
+* in_process - stores the value in memory for as long as the ruby process is running as well as in redis
+  
 == In Process Caching
 
 If you want to get really fancy you can cache the values in process as well as in Redis.  This can be a fairly significant win
