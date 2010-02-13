@@ -7,7 +7,7 @@ module Lawnchair
     attr_reader :redis
     
     def connectdb(redis=nil)
-      @redis ||= Redis.new(:db => 11)
+      @redis = (redis || Redis.new(:db => 11))
     end
 
     def flushdb
