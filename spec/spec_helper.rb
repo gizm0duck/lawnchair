@@ -4,7 +4,6 @@ require 'rubygems'
 require 'lawnchair'
 require 'spec'
 require 'spec/autorun'
-require 'redis'
 
 Spec::Runner.configure do |config|
   config.before(:all)   { Lawnchair.connectdb(Redis.new(:db => 11)) }
