@@ -2,17 +2,11 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Lawnchair::Cache" do
   describe ".me" do
-    it "raises an exception if no key is given" do
-      lambda do
-        Lawnchair::Cache.me("") { 1 }
-      end.should raise_error
-    end
-    
     it "returns the value if it exists" do
       expected_object = [1,2,3,4]
-      Lawnchair::Cache.me(:key => "marshalled_array") { expected_object }
+      Lawnchair::Cache.me("marshalled_array") { expected_object }
       
-      x = Lawnchair::Cache.me(:key => "marshalled_array") { "JUNK DATA" }
+      x = Lawnchair::Cache.me("marshalled_array") { "JUNK DATA" }
       x.should == expected_object
     end
     
@@ -20,7 +14,7 @@ describe "Lawnchair::Cache" do
       expected_object = [1,2,3,4]
       Lawnchair::Cache.me("marshalled_array") { expected_object }
       
-      Marshal.load(Lawnchair.redis["marshalled_array"]).should == [1,2,3,4]
+      Marshal.load(Lawnchair.redis["Lawnchair:marshalled_array"]).should == [1,2,3,4]
     end
     
     describe "when in_process => true" do

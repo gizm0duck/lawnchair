@@ -40,15 +40,15 @@ describe "Lawnchair::StorageEngine::Composite" do
       
       context "when the key does not exist" do
         it "sets the value on the key in the storage engine specified" do
-          Lawnchair.redis["mu"].should be_nil
+          Lawnchair.redis["Lawnchair:mu"].should be_nil
           composite_store.fetch("mu", {:raw => true}) { "fasa" }
-          Lawnchair.redis["mu"].should == "fasa"
+          Lawnchair.redis["Lawnchair:mu"].should == "fasa"
         end
       end
       
       context "when the key exists" do
         before do
-          Lawnchair.redis["sim"] = "ba"
+          Lawnchair.redis["Lawnchair:sim"] = "ba"
         end
         
         it "returns the value in the key from the storage engine specified" do
