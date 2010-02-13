@@ -20,13 +20,14 @@ module Lawnchair
       
         def get(key, options={})
           if options[:raw]
-            cache_container[key]
+            cache_container[computed_key(key)]
           else
-            exists?(key) ? Marshal.load(cache_container[key]) : nil
+            exists?(key) ? Marshal.load(cache_container[computed_key(key)]) : nil
           end
         end
       
-        def compute_key(key)
+        def computed_key(key)
+          raise "Missiing key" if key.nil? || key.empty?
           prefix = "Lawnchair"
           "#{prefix}:#{key}"
         end
