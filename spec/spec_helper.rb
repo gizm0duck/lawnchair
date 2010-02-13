@@ -10,6 +10,10 @@ Spec::Runner.configure do |config|
   config.before(:all)   { Lawnchair.connectdb(Redis.new(:db => 11)) }
   config.before(:each)  do 
     Lawnchair.flushdb
-    Lawnchair::Cache.in_process_store.keys.each {|k| Lawnchair::Cache.in_process_store.delete(k)}
+    base_store = Lawnchair::StorageEngine::Abstract
+    base_store.cache_container.keys.each {|k| base_store.cache_container.delete(k)}
+    
+    in_process = Lawnchair::StorageEngine::InProcess
+    in_process.cache_container.keys.each {|k| in_process.cache_container.delete(k)}
   end
 end
