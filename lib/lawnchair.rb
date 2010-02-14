@@ -1,6 +1,10 @@
 require 'rubygems'
 require 'redis'
-Dir[File.dirname(__FILE__) + '/storage_engine/*.rb'].each {|file| require file }
+require 'storage_engine/abstract'
+require 'storage_engine/redis'
+require 'storage_engine/in_process'
+require 'storage_engine/composite'
+
 if defined? RAILS_ENV
   require 'marshal_extension' if RAILS_ENV == "development"
   require 'view/helper'
