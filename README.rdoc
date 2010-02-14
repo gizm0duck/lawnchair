@@ -2,7 +2,7 @@
 
 Fully featured caching mechanism for arbitrary pieces of resource expensive ruby code using Redis while being able to optionally store data in the Ruby process itself for maximum efficiency.
 
-It includes a Rails view helper that can be used to cache the rendered view code, but other than that everything should work fine in a Merb, Sinatra, or plain old Ruby app.
+Lawnchair includes a Rails view helper that can be used to cache the rendered view code, but other than that everything should work fine in a Merb, Sinatra, or plain old Ruby app.
 
 == Installation
 
@@ -46,9 +46,9 @@ If an hour is too long, or short for the cache key expiration you can set that t
   end
   
 Available options:
-* expires_in - takes a time in seconds and will be set as the ttl on the key (only works for Redis store) 
-* raw - tells the cache not to marshall the data, if you are storing a string value, this is the way to go
-* in_process - stores the value in memory for as long as the ruby process is running as well as in redis
+* :expires_in - takes a time in seconds and will be set as the ttl on the key (only works for Redis store) 
+* :raw - tells the cache not to marshall the data, if you are storing a string value, this is the way to go
+* :in_process - stores the value in memory for as long as the ruby process is running as well as in redis
   
 == In Process Caching
 
