@@ -1,7 +1,10 @@
 require 'rubygems'
 require 'redis'
 Dir[File.dirname(__FILE__) + '/storage_engine/*.rb'].each {|file| require file }
-require 'view/helper'
+if defined?(RAILS_ENV)
+  require 'marshal_extension'
+  require 'view/helper'
+end
 
 module Lawnchair
   class Cache
