@@ -11,8 +11,10 @@ if defined? RAILS_ENV
 end
 
 module Lawnchair
-  class Cache
-    def self.me(key, options={}, &block)
+  class << self
+    attr_reader :redis
+    
+    def cache(key, options={}, &block)
       if options[:in_process]
         store = Lawnchair::StorageEngine::Composite.new(:in_process, :redis)
       else
@@ -20,10 +22,6 @@ module Lawnchair
       end
       store.fetch(key, options, &block)
     end
-  end
-  
-  class << self
-    attr_reader :redis
 
     def connectdb(redis=nil)
       @redis = (redis || Redis.new(:db => 11))
@@ -31,6 +29,14 @@ module Lawnchair
 
     def flushdb
       redis.flushdb
+    end
+  end
+  
+  class Cache
+    # <b>DEPRECATED:</b> Please use <tt>Lawnchair.cache</tt> instead.
+    def self.me(key, options={}, &block)
+      warn "[DEPRECATION] 'Lawnchair::Cache.me' is deprecated.  Please use 'Lawnchair.cache' instead."
+      Lawnchair.cache(key, options, &block)
     end
   end
 end

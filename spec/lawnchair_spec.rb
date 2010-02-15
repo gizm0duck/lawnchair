@@ -4,15 +4,15 @@ describe "Lawnchair::Cache" do
   describe ".me" do
     it "returns the value if it exists" do
       expected_object = [1,2,3,4]
-      Lawnchair::Cache.me("marshalled_array") { expected_object }
+      Lawnchair.cache("marshalled_array") { expected_object }
       
-      x = Lawnchair::Cache.me("marshalled_array") { "JUNK DATA" }
+      x = Lawnchair.cache("marshalled_array") { "JUNK DATA" }
       x.should == expected_object
     end
     
     it "marshalls the object into redis" do
       expected_object = [1,2,3,4]
-      Lawnchair::Cache.me("marshalled_array") { expected_object }
+      Lawnchair.cache("marshalled_array") { expected_object }
       
       Marshal.load(Lawnchair.redis["Lawnchair:marshalled_array"]).should == [1,2,3,4]
     end
@@ -23,7 +23,7 @@ describe "Lawnchair::Cache" do
         Lawnchair::StorageEngine::Composite.stub!(:new).and_return(mock_composite_engine)
         
         mock_composite_engine.should_receive(:fetch)
-        Lawnchair::Cache.me("mu", :in_process => true, :raw => true) { "fasa" }
+        Lawnchair.cache("mu", :in_process => true, :raw => true) { "fasa" }
       end
     end
   end

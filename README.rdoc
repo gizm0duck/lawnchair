@@ -10,7 +10,7 @@ Lawnchair includes a Rails view helper that can be used to cache the rendered vi
 
 == Usage Examples
 
-All you really need to do is wrap some expensive piece of Ruby code in the Lawnchair::Cache.me method as a block and it will be evaluated and the return value will cached in the given cache key.
+All you really need to do is wrap some expensive piece of Ruby code in the Lawnchair.cache method as a block and it will be evaluated and the return value will cached in the given cache key.
 
 MAKE SURE REDIS SERVER IS RUNNING PRIOR TO TRYING ANYTHING BELOW!!!
 
@@ -24,7 +24,7 @@ This will connect to a default database on localhost, if you want to connect to 
 
 Obligatory example:
   
-  Lawnchair::Cache.me("cache_key2") do
+  Lawnchair.cache("cache_key2") do
     # ideally this would be something a little more computationally expensive, but sleep will have to do
     (1..3).inject([]) do
       |set, i| set << Time.now.strftime("%H:%M:%S")
@@ -41,7 +41,7 @@ Now, since it is cached, any time this block method is called (for the next 60 m
 
 If an hour is too long, or short for the cache key expiration you can set that to anything you want using the :expires_in hash key and entering a time in seconds
 
-  Lawnchair::Cache.me("cache_key", :expires_in => 1.day) do
+  Lawnchair.cache("cache_key", :expires_in => 1.day) do
     # expensive code to be cached for 24 hours
   end
   
@@ -55,7 +55,7 @@ Available options:
 If you want to get really fancy you can cache the values in process as well as in Redis.  This can be a fairly significant win
 if you are running the Redis server on a different physical machine as all network latency is taken out of the equation, especially if you are hitting a cache key many times on the same request.  Also, it's probably best not to store TONS of keys in there, as your ruby process can bloat fairly quickly if you put everything in there.  Also, these will persist as long as the process is running, unless you manually expire it.
 
-  Lawnchair::Cache.me("cache_key3", :in_process => true) do
+  Lawnchair.cache("cache_key3", :in_process => true) do
     # expensive code to be cached in process AND in redis
   end
   
