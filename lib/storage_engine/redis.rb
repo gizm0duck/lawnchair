@@ -3,7 +3,12 @@ module Lawnchair
     class Redis < Abstract
       class << self
         def data_store
-          Lawnchair.redis
+          begin
+            Lawnchair.redis.info
+            return Lawnchair.redis
+          rescue Exception => e
+            raise Errno::ECONNREFUSED
+          end
         end
     
         def set(key, value, options={})

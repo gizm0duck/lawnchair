@@ -8,14 +8,19 @@ module Lawnchair
           @data_store ||= {}
         end
       
-        def fetch(key, options, &block)
-          if exists?(key)
-            value = get(key, options)
-          else
+        def fetch(key, options={}, &block)
+          begin
+            if exists?(key)
+              value = get(key, options)
+            else
+              value = block.call
+              set(key, value, options)
+            end
+          rescue Errno::ECONNREFUSED => e
             value = block.call
-            set(key, value, options)
+          ensure
+            return value
           end
-          value
         end
       
         def get(key, options={})
