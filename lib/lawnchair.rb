@@ -30,6 +30,16 @@ module Lawnchair
     def flushdb
       redis.flushdb
     end
+    
+    def connected?
+      return false if redis.nil?
+      begin
+        redis.info
+      rescue
+        return false
+      end
+      return true
+    end
   end
   
   class Cache

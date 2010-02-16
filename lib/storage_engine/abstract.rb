@@ -9,17 +9,16 @@ module Lawnchair
         end
       
         def fetch(key, options={}, &block)
-          begin
+          if Lawnchair.connected?
             if exists?(key)
               value = get(key, options)
             else
               value = block.call
               set(key, value, options)
+              return value
             end
-          rescue Errno::ECONNREFUSED => e
-            value = block.call
-          ensure
-            return value
+          else
+            block.call
           end
         end
       

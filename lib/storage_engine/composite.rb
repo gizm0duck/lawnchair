@@ -17,14 +17,12 @@ module Lawnchair
     
       def fetch(key, options, &block)
         raise "No Storage Engines Configured" if storage_engines.empty?
-        begin
+        if Lawnchair.connected?
           value, index = find_in_storage(key, options)
           value ||= yield
           place_in_storage(key, value, options, index)
-        rescue Errno::ECONNREFUSED => e
-          value = block.call
-        ensure
-          return value
+        else
+          block.call
         end
       end
       
