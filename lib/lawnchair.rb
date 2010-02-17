@@ -31,14 +31,8 @@ module Lawnchair
       redis.flushdb
     end
     
-    def connected?
-      return false if redis.nil?
-      begin
-        redis.info
-      rescue
-        return false
-      end
-      return true
+    def dbconnected?
+      !redis.nil?
     end
   end
   

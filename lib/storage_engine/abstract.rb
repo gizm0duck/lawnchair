@@ -9,7 +9,7 @@ module Lawnchair
         end
       
         def fetch(key, options={}, &block)
-          if Lawnchair.connected?
+          if Lawnchair.dbconnected?
             if exists?(key)
               value = get(key, options)
             else

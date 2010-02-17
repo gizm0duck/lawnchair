@@ -34,35 +34,18 @@ describe "Lawnchair::Cache" do
       
       context "when we have not established a connection to a redis server" do
         it "returns false" do
-          Lawnchair.should_not be_connected
+          Lawnchair.should_not be_dbconnected
         end
       end
       
       context "when we have established a connection to a redis server" do
         attr_reader :redis
         before do
-          @redis = Redis.new
-          Lawnchair.stub!(:redis).and_return(redis)
+          Lawnchair.stub!(:redis).and_return(Redis.new)
         end
-        
-        context "when the redis server can be reached" do
-          before do
-            redis.stub(:info).and_return("something good")
-          end
           
-          it "returns true" do
-            Lawnchair.should be_connected
-          end
-        end
-        
-        context "when the redis server can NOT be reached" do
-          before do
-            redis.stub(:info).and_raise("something bad")
-          end
-          
-          it "returns false" do
-            Lawnchair.should_not be_connected
-          end
+        it "returns true" do
+          Lawnchair.should be_dbconnected
         end
       end
     end
