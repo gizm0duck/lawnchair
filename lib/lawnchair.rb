@@ -25,6 +25,7 @@ module Lawnchair
 
     def connectdb(redis=nil)
       @redis = (redis || Redis.new(:db => 11))
+      Lawnchair::StorageEngine::Redis.verify_db_connection
     end
 
     def flushdb

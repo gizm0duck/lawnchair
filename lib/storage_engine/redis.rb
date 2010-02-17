@@ -7,18 +7,6 @@ module Lawnchair
         def data_store
           Lawnchair.redis
         end
-        
-        def db_connection?
-          return @db_connection if @db_connection
-          begin
-            Lawnchair.redis.info
-            @db_connection = true
-          rescue Exception => e
-            @db_connection = false
-          ensure
-            return @db_connection
-          end
-        end
     
         def set(key, value, options={})
           ttl = options[:expires_in] || 3600
@@ -35,6 +23,26 @@ module Lawnchair
   
         def expire!(key)
           data_store.del(computed_key(key))
+        end
+        
+        def verify_db_connection
+          begin
+            Lawnchair.redis.info
+            @db_connection = true
+          rescue Exception => e
+            @db_connection = false
+          ensure
+            return @db_connection
+          end
+        end
+        
+        def connection_established!
+          verify_db_connection
+        end
+        
+        def db_connection?
+          return @db_connection if @db_connection
+          verify_db_connection
         end
       end
     end
