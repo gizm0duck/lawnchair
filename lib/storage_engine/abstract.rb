@@ -9,7 +9,7 @@ module Lawnchair
         end
       
         def fetch(key, options={}, &block)
-          if Lawnchair.dbconnected?
+          if self.db_connection?
             if exists?(key)
               value = get(key, options)
             else
@@ -34,6 +34,10 @@ module Lawnchair
           raise "Missiing key" if key.nil? || key.empty?
           prefix = "Lawnchair"
           "#{prefix}:#{key}"
+        end
+        
+        def db_connection?
+          true
         end
       end
     end

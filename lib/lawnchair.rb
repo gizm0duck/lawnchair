@@ -30,10 +30,6 @@ module Lawnchair
     def flushdb
       redis.flushdb
     end
-    
-    def dbconnected?
-      !redis.nil?
-    end
   end
   
   class Cache

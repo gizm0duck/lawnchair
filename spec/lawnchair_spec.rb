@@ -26,28 +26,5 @@ describe "Lawnchair::Cache" do
         Lawnchair.cache("mu", :in_process => true, :raw => true) { "fasa" }
       end
     end
-    
-    describe ".connected?" do
-      before do
-        Lawnchair.stub!(:redis).and_return(nil)
-      end
-      
-      context "when we have not established a connection to a redis server" do
-        it "returns false" do
-          Lawnchair.should_not be_dbconnected
-        end
-      end
-      
-      context "when we have established a connection to a redis server" do
-        attr_reader :redis
-        before do
-          Lawnchair.stub!(:redis).and_return(Redis.new)
-        end
-          
-        it "returns true" do
-          Lawnchair.should be_dbconnected
-        end
-      end
-    end
   end
 end

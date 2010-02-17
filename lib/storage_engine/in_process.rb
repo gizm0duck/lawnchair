@@ -8,8 +8,8 @@ module Lawnchair
           @@data_store
         end
         
-        def db_required
-          false
+        def db_connection?
+          true
         end
     
         def set(key, value, options={})

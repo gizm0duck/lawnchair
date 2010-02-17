@@ -2,12 +2,22 @@ module Lawnchair
   module StorageEngine
     class Redis < Abstract
       class << self
+        attr_reader :db_connection
+        
         def data_store
           Lawnchair.redis
         end
         
-        def db_required
-          true
+        def db_connection?
+          return @db_connection if @db_connection
+          begin
+            Lawnchair.redis.info
+            @db_connection = true
+          rescue Exception => e
+            @db_connection = false
+          ensure
+            return @db_connection
+          end
         end
     
         def set(key, value, options={})

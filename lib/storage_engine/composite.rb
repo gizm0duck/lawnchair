@@ -27,7 +27,7 @@ module Lawnchair
       def find_in_storage(key, options)
         value, index = nil, nil
         storage_engines.each_with_index do |storage_engine, i|
-          if !storage_engine.db_required || Lawnchair.dbconnected?
+          if storage_engine.db_connection?
             if storage_engine.exists?(key)
               value = storage_engine.get(key, options)
               index = i
@@ -44,7 +44,7 @@ module Lawnchair
       def place_in_storage(key, value, options, index)
         storage_engines.each_with_index do |storage_engine, i|
           break if i == index
-          if !storage_engine.db_required || Lawnchair.dbconnected?            
+          if storage_engine.db_connection?
             storage_engine.set(key, value, options)
           end
         end
