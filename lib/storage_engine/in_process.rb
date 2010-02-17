@@ -7,6 +7,10 @@ module Lawnchair
         def data_store
           @@data_store
         end
+        
+        def db_required
+          false
+        end
     
         def set(key, value, options={})
           if options[:raw]

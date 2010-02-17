@@ -5,6 +5,10 @@ module Lawnchair
         def data_store
           Lawnchair.redis
         end
+        
+        def db_required
+          true
+        end
     
         def set(key, value, options={})
           ttl = options[:expires_in] || 3600

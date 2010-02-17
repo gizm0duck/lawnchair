@@ -17,13 +17,9 @@ module Lawnchair
     
       def fetch(key, options, &block)
         raise "No Storage Engines Configured" if storage_engines.empty?
-        if Lawnchair.dbconnected?
-          value, index = find_in_storage(key, options)
-          value ||= yield
-          place_in_storage(key, value, options, index)
-        else
-          block.call
-        end
+        value, index = find_in_storage(key, options)
+        value ||= yield
+        place_in_storage(key, value, options, index)
       end
       
       private
@@ -31,10 +27,15 @@ module Lawnchair
       def find_in_storage(key, options)
         value, index = nil, nil
         storage_engines.each_with_index do |storage_engine, i|
-          if storage_engine.exists?(key)
-            value = storage_engine.get(key, options)
+          if !storage_engine.db_required || Lawnchair.dbconnected?
+            if storage_engine.exists?(key)
+              value = storage_engine.get(key, options)
+              index = i
+              break
+            end
+          else
+            value = nil
             index = i
-            break
           end
         end
         return value, index
@@ -43,7 +44,9 @@ module Lawnchair
       def place_in_storage(key, value, options, index)
         storage_engines.each_with_index do |storage_engine, i|
           break if i == index
-          storage_engine.set(key, value, options)
+          if !storage_engine.db_required || Lawnchair.dbconnected?            
+            storage_engine.set(key, value, options)
+          end
         end
         value
       end
