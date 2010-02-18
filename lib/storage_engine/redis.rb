@@ -25,24 +25,24 @@ module Lawnchair
           data_store.del(computed_key(key))
         end
         
+        def connection_established!
+          verify_db_connection
+        end
+        
+        def db_connection?
+          return @db_connection unless @db_connection.nil?
+          verify_db_connection
+        end
+        
         def verify_db_connection
           begin
-            Lawnchair.redis.info
+            data_store.info
             @db_connection = true
           rescue Exception => e
             @db_connection = false
           ensure
             return @db_connection
           end
-        end
-        
-        def connection_established!
-          verify_db_connection
-        end
-        
-        def db_connection?
-          return @db_connection if @db_connection
-          verify_db_connection
         end
       end
     end

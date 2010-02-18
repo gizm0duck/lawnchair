@@ -26,7 +26,7 @@ end
 Benchmark.bm(7) do |x|
   x.report("cached:\t\t") do
     (1..n).each do |i|
-      Lawnchair::Cache.me("redis_cache") do
+      Lawnchair.cache("redis_cache") do
         expensive_stuff
       end
     end
@@ -34,7 +34,7 @@ Benchmark.bm(7) do |x|
   
   x.report("in process cached:") do
     (1..n).each do |i|
-      Lawnchair::Cache.me("in_process_cache", :in_process => true) do
+      Lawnchair.cache("in_process_cache", :in_process => true) do
         expensive_stuff
       end
     end
