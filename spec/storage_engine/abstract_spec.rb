@@ -90,6 +90,13 @@ describe "Lawnchair::StorageEngine::Abstract" do
     it "should prepend keys with Lawnchair:" do
       abstract_store.computed_key("hooo").should == "Lawnchair:hooo"
     end
+    
+    it "raises an exception if a key has a space" do
+      lambda do
+        abstract_store.computed_key("hooo  tyyyyy")
+      end.should raise_error
+    end
+    
     it "raises an exception if no key is given" do
       lambda do
         abstract_store.computed_key("") { 1 }

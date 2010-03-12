@@ -31,7 +31,8 @@ module Lawnchair
         end
       
         def computed_key(key)
-          raise "Missiing key" if key.nil? || key.empty?
+          raise "Missing key" if key.nil? || key.empty?
+          raise "Key's may not contain whitespace" if key.match(/\s/)
           prefix = "Lawnchair"
           "#{prefix}:#{key}"
         end
