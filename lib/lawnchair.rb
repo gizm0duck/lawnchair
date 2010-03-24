@@ -6,7 +6,7 @@ require 'storage_engine/in_process'
 require 'storage_engine/composite'
 
 if defined? RAILS_ENV
-  require 'marshal_extension' if RAILS_ENV == "development"
+  require 'marshal_extension' if RAILS_ENV =~ "development"
   require 'view/helper'
 end
 
