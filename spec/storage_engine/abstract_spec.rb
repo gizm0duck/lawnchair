@@ -91,10 +91,8 @@ describe "Lawnchair::StorageEngine::Abstract" do
       abstract_store.computed_key("hooo").should == "Lawnchair:hooo"
     end
     
-    it "raises an exception if a key has a space" do
-      lambda do
-        abstract_store.computed_key("hooo  tyyyyy")
-      end.should raise_error
+    it "removes whitespace that might exist in a key" do
+      abstract_store.computed_key("hooo  tyyyyy").should == "Lawnchair:hoootyyyyy"
     end
     
     it "raises an exception if no key is given" do

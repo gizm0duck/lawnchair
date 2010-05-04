@@ -32,7 +32,7 @@ module Lawnchair
       
         def computed_key(key)
           raise "Missing key" if key.nil? || key.empty?
-          raise "Key's may not contain whitespace" if key.match(/\s/)
+          key.gsub!(" ","") if key.match(/\s/)
           prefix = "Lawnchair"
           "#{prefix}:#{key}"
         end
