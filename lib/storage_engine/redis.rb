@@ -9,12 +9,11 @@ module Lawnchair
         end
     
         def set(key, value, options={})
-          ttl = options[:expires_in] || 3600
-          if options[:raw]
-            data_store.set(computed_key(key), value, ttl)
-          else
-            data_store.set(computed_key(key), Marshal.dump(value), ttl)
-          end
+          ttl   = options[:expires_in] || 3600
+          value = Marshal.dump(value) unless options[:raw]
+          
+          data_store.set(computed_key(key), value)
+          data_store.expireat(computed_key(key), Time.now.to_i + ttl)
         end
   
         def exists?(key)
