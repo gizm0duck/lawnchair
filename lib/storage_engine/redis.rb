@@ -13,7 +13,7 @@ module Lawnchair
           value = Marshal.dump(value) unless options[:raw]
           
           data_store.set(computed_key(key), value)
-          data_store.expireat(computed_key(key), Time.now.to_i + ttl)
+          data_store.expireat(computed_key(key), (Time.now + ttl).to_i)
         end
   
         def exists?(key)
