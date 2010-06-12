@@ -46,10 +46,12 @@ end
 class Object
   def self.lawnchair_cache(method)
     self.class_eval %{
-      def #{method}_with_lawnchair
-        key = "#\{self.class.name\}:#{method}:#\{self.id\}"
+      def #{method}_with_lawnchair(*args)
+        ident = lambda { |obj| obj.class.respond_to?(:primary_key) ? obj.send(obj.class.primary_key) : obj.to_s }
+        arg_keys = args.map(&ident).join(':')
+        key = "#\{self.class.name\}:#{method}:#\{ident.call(self)\}:#\{arg_keys\}"
         Lawnchair.cache(key, {}) do
-          self.#{method}_without_lawnchair
+          self.#{method}_without_lawnchair(*args)
         end
       end
     }

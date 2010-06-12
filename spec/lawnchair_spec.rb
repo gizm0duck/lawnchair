@@ -1,13 +1,27 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
+class Fertilize
+  attr_reader :size
+
+  def initialize(size, key)
+    @size = size
+    @key = key
+  end
+
+  def self.primary_key
+    :spread
+  end
+
+  def spread
+    @key
+  end
+end
+
 class Grass
+  attr_reader :length
 
   def initialize
     @length = 10
-  end
-
-  def id
-    object_id
   end
 
   def kill
@@ -18,7 +32,17 @@ class Grass
     @length -= 1
   end
 
+  def cut(how_much)
+    @length -= how_much
+  end
+
+  def weed(puff, *args)
+    @length -= puff.size
+  end
+
   lawnchair_cache :mow
+  lawnchair_cache :cut
+  lawnchair_cache :weed
 end
 
 describe "Lawnchair::Cache" do
@@ -63,6 +87,57 @@ describe "Lawnchair::Cache" do
         grass.mow.should == 9
         weed.mow.should == -1
         weed.mow.should == -1
+      end
+
+      describe "with parameters" do
+        it "caches the value by parameter value as well" do
+          grass = Grass.new
+          grass.cut(2).should == 8
+          grass.cut(1).should == 7
+          grass.cut(3).should == 4
+
+          grass.cut(1).should == 7
+          grass.cut(2).should == 8
+          grass.cut(3).should == 4
+
+          grass.length.should == 4
+        end
+      end
+      
+      describe "when the paramter is an ActiveRecord object" do
+        before do
+          @treatment1 = Fertilize.new(3, 'a')
+          @treatment2 = Fertilize.new(3, 'b')
+          @treatment3 = Fertilize.new(2, 'c')
+          @treatment1_again = Fertilize.new(187, 'a')
+          @grass = Grass.new
+        end
+        
+        it "uses the primary key in the id" do
+          @grass.weed(@treatment1).should == 7
+          @grass.weed(@treatment2).should == 4
+          @grass.weed(@treatment3).should == 2     
+               
+          @grass.weed(@treatment1).should == 7
+          @grass.weed(@treatment2).should == 4          
+          @grass.weed(@treatment3).should == 2          
+
+          @grass.weed(@treatment1_again).should == 7
+        end
+      end
+      
+      describe "when there are multiple parameters" do
+        before do
+          @treatment1 = Fertilize.new(3, 'a')
+          @grass = Grass.new
+        end
+        
+        it "takes all parameters into consideration" do
+          @grass.weed(@treatment1, [1,2,3]).should == 7
+          @grass.weed(@treatment1, [1,2]).should == 4
+          @grass.weed(@treatment1, [1,2,3]).should == 7
+          @grass.weed(@treatment1, [1,2]).should == 4
+        end
       end
     end
   end
