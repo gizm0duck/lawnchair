@@ -1,5 +1,26 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
+class Grass
+
+  def initialize
+    @length = 10
+  end
+
+  def id
+    object_id
+  end
+
+  def kill
+    @length = 0
+  end
+
+  def mow
+    @length -= 1
+  end
+
+  lawnchair_cache :mow
+end
+
 describe "Lawnchair::Cache" do
   describe ".me" do
     it "returns the value if it exists" do
@@ -24,6 +45,24 @@ describe "Lawnchair::Cache" do
         
         mock_composite_engine.should_receive(:fetch)
         Lawnchair.cache("mu", :in_process => true, :raw => true) { "fasa" }
+      end
+    end
+    
+    describe "caching a method" do
+      it "should cache the value of a method" do
+        grass = Grass.new
+        grass.mow.should == 9
+        grass.mow.should == 9
+      end
+
+      it "should cache a unique value per instance" do
+        grass = Grass.new
+        weed = Grass.new
+        weed.kill
+        grass.mow.should == 9
+        grass.mow.should == 9
+        weed.mow.should == -1
+        weed.mow.should == -1
       end
     end
   end

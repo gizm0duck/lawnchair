@@ -4,6 +4,7 @@ require 'storage_engine/abstract'
 require 'storage_engine/redis'
 require 'storage_engine/in_process'
 require 'storage_engine/composite'
+require 'activesupport'
 
 if defined? RAILS_ENV
   require 'marshal_extension' if RAILS_ENV =~ /development/
@@ -41,3 +42,20 @@ module Lawnchair
     end
   end
 end
+
+class Object
+  def self.lawnchair_cache(method)
+    self.class_eval %{
+      def #{method}_with_lawnchair
+        key = "#\{self.class.name\}:#{method}:#\{self.id\}"
+        Lawnchair.cache(key, {}) do
+          self.#{method}_without_lawnchair
+        end
+      end
+    }
+
+    # should do something interesting
+    alias_method_chain method, :lawnchair
+  end
+end
+
