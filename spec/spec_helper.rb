@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'lawnchair'
 require 'spec'
 require 'spec/autorun'
-
+require 'active_record_extension'
 Spec::Runner.configure do |config|
   config.before(:all)   { Lawnchair.connectdb(Redis.new(:db => 11)) }
   config.before(:each)  do 

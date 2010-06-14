@@ -4,9 +4,9 @@ require 'storage_engine/abstract'
 require 'storage_engine/redis'
 require 'storage_engine/in_process'
 require 'storage_engine/composite'
-require 'activesupport'
 
 if defined? RAILS_ENV
+  require 'active_record_extension'
   require 'marshal_extension' if RAILS_ENV =~ /development/
   require 'view/helper'
 end
@@ -40,24 +40,6 @@ module Lawnchair
       warn "[DEPRECATION] 'Lawnchair::Cache.me' is deprecated.  Please use 'Lawnchair.cache' instead."
       Lawnchair.cache(key, options, &block)
     end
-  end
-end
-
-class Object
-  def self.lawnchair_cache(method)
-    self.class_eval %{
-      def #{method}_with_lawnchair(*args)
-        ident = lambda { |obj| obj.class.respond_to?(:primary_key) ? obj.send(obj.class.primary_key) : obj.to_s }
-        arg_keys = args.map(&ident).join(':')
-        key = "#\{self.class.name\}:#{method}:#\{ident.call(self)\}:#\{arg_keys\}"
-        Lawnchair.cache(key, {}) do
-          self.#{method}_without_lawnchair(*args)
-        end
-      end
-    }
-
-    # should do something interesting
-    alias_method_chain method, :lawnchair
   end
 end
 

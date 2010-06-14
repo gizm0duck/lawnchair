@@ -18,6 +18,7 @@ class Fertilize
 end
 
 class Grass
+  include ActiveRecord::LawnchairExtension
   attr_reader :length
 
   def initialize
