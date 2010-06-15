@@ -43,7 +43,7 @@ class Grass
 
   lawnchair_cache :mow
   lawnchair_cache :cut
-  lawnchair_cache :weed
+  lawnchair_cache :weed, :expires_in => 0
 end
 
 describe "Lawnchair::Cache" do
@@ -137,6 +137,19 @@ describe "Lawnchair::Cache" do
           @grass.weed(@treatment1, [1,2,3]).should == 7
           @grass.weed(@treatment1, [1,2]).should == 4
           @grass.weed(@treatment1, [1,2,3]).should == 7
+          @grass.weed(@treatment1, [1,2]).should == 4
+        end
+      end
+      
+      describe "when options are passed" do
+        before do
+          @treatment1 = Fertilize.new(3, 'a')
+          @grass = Grass.new
+        end
+        
+        it "allows the same options as regular calls to Lawnchair.cache" do
+          @grass.weed(@treatment1, [1,2]).should == 7
+          sleep 1
           @grass.weed(@treatment1, [1,2]).should == 4
         end
       end
