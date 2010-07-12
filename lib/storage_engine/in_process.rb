@@ -26,6 +26,7 @@ module Lawnchair
   
         def expire!(key)
           data_store.delete(computed_key(key))
+          super
         end
       end
     end

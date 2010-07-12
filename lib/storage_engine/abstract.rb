@@ -11,8 +11,10 @@ module Lawnchair
         def fetch(key, options={}, &block)
           if self.db_connection?
             if exists?(key)
+              log("HIT", key)
               value = get(key, options)
             else
+              log("MISS", key)
               value = block.call
               set(key, value, options)
               return value
@@ -39,6 +41,14 @@ module Lawnchair
         
         def db_connection?
           true
+        end
+        
+        def expire!(key)
+          log("EXPIRATION", key)
+        end
+        
+        def log(message, key)
+          ActionController::Base.logger.info("Lawnchair Cache: #{message}: #{key}") if defined? ::ActionController::Base
         end
       end
     end

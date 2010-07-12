@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shane Wolf"]
-  s.date = %q{2010-06-14}
+  s.date = %q{2010-07-12}
   s.description = %q{Fully featured caching mechanism for arbitrary pieces of resource expensive ruby code using Redis while being able to optionally store data in the Ruby process itself for maximum efficiency.}
   s.email = %q{shanewolf@gmail.com}
   s.extra_rdoc_files = [
@@ -39,8 +39,7 @@ Gem::Specification.new do |s|
      "spec/storage_engine/abstract_spec.rb",
      "spec/storage_engine/composite_spec.rb",
      "spec/storage_engine/in_process_spec.rb",
-     "spec/storage_engine/redis_spec.rb",
-     "tags"
+     "spec/storage_engine/redis_spec.rb"
   ]
   s.homepage = %q{http://github.com/gizm0duck/lawnchair}
   s.rdoc_options = ["--charset=UTF-8"]

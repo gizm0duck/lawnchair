@@ -22,6 +22,7 @@ module Lawnchair
   
         def expire!(key)
           data_store.del(computed_key(key))
+          super
         end
         
         def connection_established!
