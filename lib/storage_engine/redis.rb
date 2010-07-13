@@ -21,8 +21,9 @@ module Lawnchair
         end
   
         def expire!(key)
+          start_time = Time.now
           data_store.del(computed_key(key))
-          super
+          log("EXPIRATION", key, Time.now-start_time)
         end
         
         def connection_established!
@@ -33,7 +34,7 @@ module Lawnchair
           return @db_connection unless @db_connection.nil?
           verify_db_connection
         end
-        
+             
         def verify_db_connection
           begin
             data_store.info

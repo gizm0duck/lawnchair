@@ -25,8 +25,9 @@ module Lawnchair
         end
   
         def expire!(key)
+          start_time = Time.now
           data_store.delete(computed_key(key))
-          super
+          log("EXPIRATION", key, Time.now-start_time)
         end
       end
     end
