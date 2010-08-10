@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lawnchair}
-  s.version = "0.6.5"
+  s.version = "0.6.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shane Wolf"]
-  s.date = %q{2010-08-09}
+  s.date = %q{2010-08-10}
   s.description = %q{Fully featured caching mechanism for arbitrary pieces of resource expensive ruby code using Redis while being able to optionally store data in the Ruby process itself for maximum efficiency.}
   s.email = %q{shanewolf@gmail.com}
   s.extra_rdoc_files = [
