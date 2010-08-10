@@ -7,7 +7,7 @@ require 'storage_engine/composite'
 
 if defined? RAILS_ENV
   require 'active_record_extension'
-  require 'marshal_extension' if RAILS_ENV =~ /development/
+  require 'marshal_extension'
   require 'view/helper'
 end
 
