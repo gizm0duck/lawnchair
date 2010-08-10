@@ -58,10 +58,4 @@ describe "Lawnchair::StorageEngine::InProcessStore" do
       in_process_store.data_store["Lawnchair:sim"].should == "ba"
     end
   end
-  
-  describe "#db_connection?" do
-    it "should return true" do
-      in_process_store.should be_db_connection
-    end
-  end
 end

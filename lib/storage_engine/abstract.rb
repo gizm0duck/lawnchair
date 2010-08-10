@@ -9,20 +9,16 @@ module Lawnchair
         end
       
         def fetch(key, options={}, &block)
-          if self.db_connection?
-            start_time = Time.now
-            if exists?(key)
-              value = get(key, options)
-              log("HIT", key, Time.now-start_time)
-              return value
-            else
-              value = block.call
-              set(key, value, options)
-              log("MISS", key, Time.now-start_time)
-              return value
-            end
+          start_time = Time.now
+          if exists?(key)
+            value = get(key, options)
+            log("HIT", key, Time.now-start_time)
+            return value
           else
-            block.call
+            value = block.call
+            set(key, value, options)
+            log("MISS", key, Time.now-start_time)
+            return value
           end
         end
       

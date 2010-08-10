@@ -2,8 +2,6 @@ module Lawnchair
   module StorageEngine
     class Redis < Abstract
       class << self
-        attr_reader :db_connection
-        
         def data_store
           Lawnchair.redis
         end
@@ -24,26 +22,6 @@ module Lawnchair
           start_time = Time.now
           data_store.del(computed_key(key))
           log("EXPIRATION", key, Time.now-start_time)
-        end
-        
-        def connection_established!
-          verify_db_connection
-        end
-        
-        def db_connection?
-          return @db_connection unless @db_connection.nil?
-          verify_db_connection
-        end
-             
-        def verify_db_connection
-          begin
-            data_store.info
-            @db_connection = true
-          rescue Exception => e
-            @db_connection = false
-          ensure
-            return @db_connection
-          end
         end
       end
     end

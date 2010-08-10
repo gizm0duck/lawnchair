@@ -7,10 +7,6 @@ module Lawnchair
         def data_store
           @@data_store
         end
-        
-        def db_connection?
-          true
-        end
     
         def set(key, value, options={})
           if options[:raw]
