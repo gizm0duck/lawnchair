@@ -9,6 +9,7 @@ module Lawnchair
         end
       
         def fetch(key, options={}, &block)
+                    
           start_time = Time.now
           if exists?(key)
             value = get(key, options)

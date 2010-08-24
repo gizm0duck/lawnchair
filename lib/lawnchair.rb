@@ -21,7 +21,9 @@ module Lawnchair
       else
         store = Lawnchair::StorageEngine::Redis
       end
-      store.fetch(key, options, &block)
+      interpolate(options[:interpolate]) do
+        store.fetch(key, options, &block)
+      end
     end
 
     def connectdb(redis=nil)
@@ -30,6 +32,11 @@ module Lawnchair
 
     def flushdb
       redis.flushdb
+    end
+    
+    def interpolate(interpolations, &block)
+      interpolations ||= {}
+      interpolations.inject(block.call){|cached_data, interpolated_data| cached_data.gsub!(interpolated_data.first, interpolated_data.last) }
     end
   end
   

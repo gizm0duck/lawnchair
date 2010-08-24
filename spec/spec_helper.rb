@@ -6,7 +6,7 @@ require 'spec/autorun'
 require 'active_record_extension'
 Spec::Runner.configure do |config|
   config.before(:all)   { Lawnchair.connectdb(Redis.new(:db => 11)) }
-  config.before(:each)  do 
+  config.before(:each)  do
     Lawnchair.flushdb
     abstract_store = Lawnchair::StorageEngine::Abstract
     abstract_store.data_store.keys.each {|k| abstract_store.data_store.delete(k)}
