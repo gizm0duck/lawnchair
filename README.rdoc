@@ -65,6 +65,8 @@ Now let's interpolate this data with dynamic content.
   => "current time: Tue Aug 24 16:13:40 -0700 2010"
   cached_result = Lawnchair.cache("cached_time", :interpolate => {"__TIME__" => Time.now.to_s}) { "current time: __TIME__" }
   => "current time: Tue Aug 24 16:13:42 -0700 2010"
+  
+Notice that the timestamp is different for each call, even though the data is coming out of the cache.
 
 == In Process Caching
 
@@ -105,7 +107,6 @@ If you need to flush all the values in the Redis database
 
   Lawnchair.flushdb
 
-
 == Note on Patches/Pull Requests
  
 * Fork the project.
@@ -116,3 +117,5 @@ If you need to flush all the values in the Redis database
 == Copyright
 
 Copyright (c) 2010 Shane Wolf. See LICENSE for details.
+
+Thanks to Tyler Kovacs for the inspiration for content interpolation.
