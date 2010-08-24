@@ -49,7 +49,23 @@ Available options:
 * :expires_in - takes a time in seconds and will be set as the ttl on the key (only works for Redis store) 
 * :raw - tells the cache not to marshall the data, if you are storing a string value, this is the way to go
 * :in_process - stores the value in memory for as long as the ruby process is running as well as in redis
+* :interpolate - allows you to cache large pieces of data but override sections of it with dynamic content
+
+== Interpolating Data
+
+Caching large pieces of the page can prove to be difficult in a highly dynamic environment. Content interpolation
+makes this easier to deal with common things such as user names, timestamps, flash messages and more.
+
+  cached_result = Lawnchair.cache("cached_time") { "current time: __TIME__" }
+  => "current time: __TIME__"
   
+Now let's interpolate this data with dynamic content.
+
+  cached_result = Lawnchair.cache("cached_time", :interpolate => {"__TIME__" => Time.now.to_s}) { "current time: __TIME__" }
+  => "current time: Tue Aug 24 16:13:40 -0700 2010"
+  cached_result = Lawnchair.cache("cached_time", :interpolate => {"__TIME__" => Time.now.to_s}) { "current time: __TIME__" }
+  => "current time: Tue Aug 24 16:13:42 -0700 2010"
+
 == In Process Caching
 
 If you want to get really fancy you can cache the values in process as well as in Redis.  This can be a fairly significant win
