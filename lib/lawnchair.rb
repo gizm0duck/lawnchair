@@ -36,7 +36,7 @@ module Lawnchair
     
     def interpolate(interpolations, &block)
       interpolations ||= {}
-      interpolations.inject(block.call){|cached_data, interpolated_data| cached_data.gsub!(interpolated_data.first, interpolated_data.last) }
+      interpolations.inject(block.call){|cached_data, interpolated_data| cached_data.gsub(interpolated_data.first, interpolated_data.last) }
     end
   end
   
