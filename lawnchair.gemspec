@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Shane Wolf"]
-  s.date = %q{2010-09-14}
+  s.date = %q{2010-09-15}
   s.description = %q{Fully featured caching mechanism for arbitrary pieces of resource expensive ruby code using Redis while being able to optionally store data in the Ruby process itself for maximum efficiency.}
   s.email = %q{shanewolf@gmail.com}
   s.extra_rdoc_files = [
@@ -61,14 +61,14 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<redis>, [">= 0.1.2"])
+      s.add_runtime_dependency(%q<redis>, [">= 2.0.0"])
       s.add_runtime_dependency(%q<activesupport>, [">= 2.3.2"])
     else
-      s.add_dependency(%q<redis>, [">= 0.1.2"])
+      s.add_dependency(%q<redis>, [">= 2.0.0"])
       s.add_dependency(%q<activesupport>, [">= 2.3.2"])
     end
   else
-    s.add_dependency(%q<redis>, [">= 0.1.2"])
+    s.add_dependency(%q<redis>, [">= 2.0.0"])
     s.add_dependency(%q<activesupport>, [">= 2.3.2"])
   end
 end
