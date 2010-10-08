@@ -11,8 +11,7 @@ module Lawnchair
         def fetch(key, options={}, &block)
                     
           start_time = Time.now
-          if exists?(key)
-            value = get(key, options)
+          if value = get(key, options)
             log("HIT", key, Time.now-start_time)
             return value
           else
@@ -27,7 +26,8 @@ module Lawnchair
           if options[:raw]
             data_store[computed_key(key)]
           else
-            exists?(key) ? Marshal.load(data_store[computed_key(key)]) : nil
+            value = data_store[computed_key(key)]
+            value.nil? ? nil : Marshal.load(value)
           end
         end
       

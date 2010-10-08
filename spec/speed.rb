@@ -1,6 +1,6 @@
 require 'benchmark'
 require "#{File.dirname(__FILE__)}/../lib/lawnchair"
-
+require 'activesupport'
 Lawnchair.connectdb
 Lawnchair.flushdb
 
@@ -18,13 +18,13 @@ puts "*** Performing #{n} iterations ***"
 
 def expensive_stuff
   a = []
-  100.times do
-    a << Date.parse("Dec 3. 1981")
+  100.times do |i|
+    a << Time.parse("Dec 3. 1981")
   end
 end
 
 Benchmark.bm(7) do |x|
-  x.report("cached:\t\t") do
+  x.report("cached:\t\t\t") do
     (1..n).each do |i|
       Lawnchair.cache("redis_cache") do
         expensive_stuff
@@ -32,7 +32,7 @@ Benchmark.bm(7) do |x|
     end
   end
   
-  x.report("in process cached:") do
+  x.report("in process cached:\t") do
     (1..n).each do |i|
       Lawnchair.cache("in_process_cache", :in_process => true) do
         expensive_stuff
@@ -43,6 +43,38 @@ Benchmark.bm(7) do |x|
   x.report("not cached:\t\t") do
     (1..n).each do |i|
       expensive_stuff
+    end
+  end
+end
+
+puts "**** GET vs EXISTS ****"
+
+Benchmark.bm(7) do |x|
+  x.report("get: not in cache:\t\t") do
+    (1..n).each do |i|
+      Lawnchair::StorageEngine::Redis.get("redis_cache")
+    end
+  end
+  
+  x.report("exist: not in cache:\t\t") do
+    (1..n).each do |i|      
+      Lawnchair::StorageEngine::Redis.exists?("redis_cache")
+    end
+  end
+  
+  Lawnchair.cache("redis_cache") do
+    expensive_stuff
+  end
+  
+  x.report("get: in cache:\t\t\t") do
+    (1..n).each do |i|
+      Lawnchair::StorageEngine::Redis.get("redis_cache")
+    end
+  end
+  
+  x.report("exist: in cache:\t\t") do
+    (1..n).each do |i|
+      Lawnchair::StorageEngine::Redis.exists?("redis_cache")
     end
   end
 end
