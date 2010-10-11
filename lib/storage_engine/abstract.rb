@@ -42,7 +42,7 @@ module Lawnchair
         end
         
         def log(message, key, elapsed)
-          Lawnchair.redis.incr("#{computed_key(key)}:#{message}")
+          Lawnchair.redis.hincrby(message, computed_key(key), 1)
           ActionController::Base.logger.info("Lawnchair Cache: #{message} (%0.6f secs): #{key}" % elapsed) if defined? ::ActionController::Base
         end
       end

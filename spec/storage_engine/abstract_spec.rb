@@ -28,7 +28,7 @@ describe "Lawnchair::StorageEngine::Abstract" do
       it "increments the cache HIT count for this key" do
         abstract_store.fetch("sim", :raw => true) { "DOESNT MATTER" }
         abstract_store.fetch("sim", :raw => true) { "DOESNT MATTER" }
-        Lawnchair.redis.get("Lawnchair:sim:HIT").should == "2"
+        Lawnchair.redis.hget("HIT", "Lawnchair:sim").should == "2"
       end
     end
     
@@ -51,11 +51,11 @@ describe "Lawnchair::StorageEngine::Abstract" do
       
       it "increments the cache MISS count for this key" do
         abstract_store.fetch("sim", :raw => true) { "ba" }
-        Lawnchair.redis.del("Lawnchair:sim")
+        abstract_store.data_store["Lawnchair:sim"] = nil
         abstract_store.fetch("sim", :raw => true) { "ba" }
-        Lawnchair.redis.del("Lawnchair:sim")
+        abstract_store.data_store["Lawnchair:sim"] = nil
         abstract_store.fetch("sim", :raw => true) { "ba" }
-        Lawnchair.redis.get("Lawnchair:sim:MISS").should == "3"
+        Lawnchair.redis.hget("MISS", "Lawnchair:sim").should == "3"
       end
     end
   end
