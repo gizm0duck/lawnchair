@@ -9,7 +9,6 @@ module Lawnchair
         end
       
         def fetch(key, options={}, &block)
-                    
           start_time = Time.now
           if value = get(key, options)
             log("HIT", key, Time.now-start_time)
@@ -43,6 +42,7 @@ module Lawnchair
         end
         
         def log(message, key, elapsed)
+          Lawnchair.redis.incr("#{computed_key(key)}:#{message}")
           ActionController::Base.logger.info("Lawnchair Cache: #{message} (%0.6f secs): #{key}" % elapsed) if defined? ::ActionController::Base
         end
       end

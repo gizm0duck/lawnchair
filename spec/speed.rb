@@ -78,3 +78,22 @@ Benchmark.bm(7) do |x|
     end
   end
 end
+
+puts "*** Hash access vs. key access ***"
+
+Lawnchair.redis.set("key_lookup", expensive_stuff.to_s)
+Lawnchair.redis.hset("hash_lookup", "value", expensive_stuff.to_s)
+
+Benchmark.bm(7) do |x|
+  x.report("key: \t\t") do
+    (1..n).each do |i|
+      Lawnchair.redis.get("key_lookup")
+    end
+  end
+  
+  x.report("hash:\t\t") do
+    (1..n).each do |i|
+      Lawnchair.redis.hget("hash_lookup", "value")
+    end
+  end
+end

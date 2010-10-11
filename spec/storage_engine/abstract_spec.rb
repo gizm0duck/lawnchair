@@ -24,6 +24,12 @@ describe "Lawnchair::StorageEngine::Abstract" do
         value = abstract_store.fetch("sim", :raw => true) { "DOESNT MATTER" }
         value.should == "ba"
       end
+      
+      it "increments the cache HIT count for this key" do
+        abstract_store.fetch("sim", :raw => true) { "DOESNT MATTER" }
+        abstract_store.fetch("sim", :raw => true) { "DOESNT MATTER" }
+        Lawnchair.redis.get("Lawnchair:sim:HIT").should == "2"
+      end
     end
     
     context "when key does not exist" do
@@ -41,6 +47,15 @@ describe "Lawnchair::StorageEngine::Abstract" do
       it "computes the value and saves it to the cache" do
         value = abstract_store.fetch("sim", :raw => true) { "ba" }
         abstract_store.data_store["Lawnchair:sim"].should == "ba"
+      end
+      
+      it "increments the cache MISS count for this key" do
+        abstract_store.fetch("sim", :raw => true) { "ba" }
+        Lawnchair.redis.del("Lawnchair:sim")
+        abstract_store.fetch("sim", :raw => true) { "ba" }
+        Lawnchair.redis.del("Lawnchair:sim")
+        abstract_store.fetch("sim", :raw => true) { "ba" }
+        Lawnchair.redis.get("Lawnchair:sim:MISS").should == "3"
       end
     end
   end
