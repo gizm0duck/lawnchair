@@ -32,7 +32,6 @@ module Lawnchair
       
         def computed_key(key)
           raise "Missing key" if key.nil? || key.empty?
-          key.gsub!(" ","") if key.match(/\s/)
           prefix = "Lawnchair"
           "#{prefix}:#{key}"
         end
