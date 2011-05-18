@@ -44,6 +44,15 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.5.0}
   s.summary = %q{Speed up your app by caching expensive code in Redis or in the ruby process itself}
+  s.test_files = [
+    "spec/lawnchair_spec.rb",
+    "spec/spec_helper.rb",
+    "spec/speed.rb",
+    "spec/storage_engine/abstract_spec.rb",
+    "spec/storage_engine/composite_spec.rb",
+    "spec/storage_engine/in_process_spec.rb",
+    "spec/storage_engine/redis_spec.rb"
+  ]
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
